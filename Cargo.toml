@@ -1,0 +1,10 @@
+[package]
+name = "sw-cdp1802-emulator"
+version = "0.1.0"
+edition = "2024"
+description = "RCA CDP1802 Emulator: instruction execution semantics"
+license = "MIT"
+
+[dependencies]
+sw-isa-core = { path = "../../sw-langtools/sw-isa-core" }
+sw-cdp1802-isa = { path = "../sw-cdp1802-isa" }
