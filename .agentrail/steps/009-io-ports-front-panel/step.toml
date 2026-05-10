@@ -1,0 +1,11 @@
+number = 9
+slug = "io-ports-front-panel"
+status = "pending"
+description = """
+Step 9 of saga `cdp1802-emulator-asm-demo`: ELF-style ports and front panel.
+..."""
+role = "production"
+context_files = []
+created_at = "2026-05-10T16:07:49"
+task_type = "emulator-io"
+commits = []

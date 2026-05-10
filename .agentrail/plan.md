@@ -9,7 +9,7 @@ Context to preserve for every step:
 - The current generated skeleton says implementation is pending saga steps 7-11; for this focused saga, prioritize the assembler/emulator demonstration over full codegen completeness.
 - Keep each step narrow, commit before `agentrail complete`, and do not hand-edit `.agentrail/`.
 
-Proposed next steps:
+Completed / current steps:
 
 1. `decisions-and-demo-contract` - Decide the smallest convincing CDP1802 demo: instruction subset, memory map, reset/entry behavior, halt convention, assembler syntax subset, and success criteria. Produce a short docs record in this repo that references `gen-isa` and the IBM 1130 examples.
 2. `isa-readiness-check` - Validate `sw-cdp1802-isa` has the opcode/decode/encode surface needed for the demo. Fill only the subset required for the demo if still skeletal, with round-trip tests.
@@ -18,3 +18,9 @@ Proposed next steps:
 5. `assemble-run-integration` - Add an integration test that assembles demo source with the sibling assembler, loads bytes into emulator memory, runs to the chosen halt condition, and asserts final state.
 6. `demo-runner-and-docs` - Add a small example or test fixture that prints the demo source, machine bytes, trace/final registers, and result, mirroring the IBM 1130 demo discipline.
 7. `postmortem-and-followups` - Capture what generalized cleanly from the IBM 1130 bring-up, what CDP1802 forced differently, and which follow-up saga should handle full codegen/frontend work.
+
+Planned I/O board follow-up steps:
+
+8. `io-bits-q-ef` - Implement CDP1802 `Q`, `EF1..EF4`, `SEQ`, `REQ`, and EF branch instructions with unit tests. See `docs/io-board.md`.
+9. `io-ports-front-panel` - Implement the `INP`/`OUT` subset and an ELF-style front-panel board model for hex display, keypad/input latch, input strobe, and visible Q LED. See `docs/io-board.md`.
+10. `memory-bitmap-video` - Implement a deterministic 64 x 32 RAM-backed monochrome video view plus text renderer. Defer cycle-accurate CDP1861/Pixie DMA to a later saga. See `docs/io-board.md`.
