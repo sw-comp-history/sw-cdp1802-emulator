@@ -1,0 +1,1 @@
+Added regression coverage for the runnable I/O board demo and README instructions for running it, tying the example to expected assembled bytes, CPU state, front-panel state, RAM bytes, and video text output.

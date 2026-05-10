@@ -1,0 +1,11 @@
+{
+  "task_type": "emulator-io",
+  "state": {
+    "number": 3,
+    "step": "io-board-demo-regression-docs"
+  },
+  "action": "Read the demo contract, runnable example, tests, and README; exported example constants for test reuse; added tests/io_board_demo.rs; documented cargo run --example io_board_demo; ran markdown validation, cargo fmt --check, cargo test, and the runnable example.",
+  "result": "success",
+  "reward": 1,
+  "timestamp": "2026-05-10T16:51:24"
+}

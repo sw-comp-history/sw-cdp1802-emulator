@@ -1,9 +1,10 @@
 number = 3
 slug = "io-board-demo-regression-docs"
-status = "in-progress"
+status = "completed"
 description = 'Step 3 of saga `io-board-demo`: regression test and docs.\n\nGoal: make the I...'
 role = "production"
 context_files = []
 created_at = "2026-05-10T16:42:38"
+completed_at = "2026-05-10T16:51:24"
 task_type = "emulator-io"
-commits = []
+commits = ["b7cac4026f1717952471268390c42c239a375a0c"]
