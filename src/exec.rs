@@ -3,6 +3,7 @@
 use sw_cdp1802_isa::Instruction;
 use sw_isa_core::DecodeError;
 
+use crate::board::FrontPanel;
 use crate::memory::Memory;
 use crate::state::CpuState;
 
@@ -19,15 +20,26 @@ impl From<DecodeError> for ExecError {
 }
 
 pub fn step(state: &mut CpuState, mem: &mut Memory) -> Result<(), ExecError> {
+    step_with_front_panel(state, mem, None)
+}
+
+pub fn step_with_front_panel(
+    state: &mut CpuState,
+    mem: &mut Memory,
+    mut board: Option<&mut FrontPanel>,
+) -> Result<(), ExecError> {
     if state.halted {
         return Err(ExecError::Halted);
+    }
+    if let Some(board) = board.as_deref() {
+        board.sync_inputs_to_cpu(state);
     }
 
     let pc = state.pc();
     let (insn, size) = mem.decode_at(pc)?;
     state.advance_pc(size);
     state.instr_count += 1;
-    exec_instruction(state, mem, insn);
+    exec_instruction(state, mem, board.as_deref_mut(), insn);
     Ok(())
 }
 
@@ -39,7 +51,25 @@ pub fn run(state: &mut CpuState, mem: &mut Memory, max_steps: u64) -> Result<u64
     Ok(state.instr_count - start)
 }
 
-fn exec_instruction(state: &mut CpuState, mem: &mut Memory, insn: Instruction) {
+pub fn run_with_front_panel(
+    state: &mut CpuState,
+    mem: &mut Memory,
+    board: &mut FrontPanel,
+    max_steps: u64,
+) -> Result<u64, ExecError> {
+    let start = state.instr_count;
+    while !state.halted && state.instr_count - start < max_steps {
+        step_with_front_panel(state, mem, Some(board))?;
+    }
+    Ok(state.instr_count - start)
+}
+
+fn exec_instruction(
+    state: &mut CpuState,
+    mem: &mut Memory,
+    mut board: Option<&mut FrontPanel>,
+    insn: Instruction,
+) {
     match insn {
         Instruction::Idle => {
             state.halted = true;
@@ -66,11 +96,31 @@ fn exec_instruction(state: &mut CpuState, mem: &mut Memory, insn: Instruction) {
         Instruction::Store { reg } => {
             mem.write_byte(state.read_reg(reg.index_u8()), state.d);
         }
+        Instruction::Output { port } => {
+            let idx = state.x & 0x0F;
+            let addr = state.read_reg(idx);
+            let value = mem.read_byte(addr);
+            if let Some(board) = board.as_deref_mut() {
+                board.output_port(port, value);
+            }
+            state.write_reg(idx, addr.wrapping_add(1));
+        }
+        Instruction::Input { port } => {
+            let value = board.as_deref().map_or(0, |board| board.input_port(port));
+            mem.write_byte(state.read_reg(state.x), value);
+            state.d = value;
+        }
         Instruction::ResetQ => {
             state.q = false;
+            if let Some(board) = board.as_deref_mut() {
+                board.sync_outputs_from_cpu(state);
+            }
         }
         Instruction::SetQ => {
             state.q = true;
+            if let Some(board) = board.as_deref_mut() {
+                board.sync_outputs_from_cpu(state);
+            }
         }
         Instruction::PutLow { reg } => {
             let idx = reg.index_u8();

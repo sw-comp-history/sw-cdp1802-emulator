@@ -1,4 +1,6 @@
-use sw_cdp1802_emulator::{CpuState, ExecError, Memory, run, step};
+use sw_cdp1802_emulator::{
+    CpuState, ExecError, FrontPanel, Memory, run, step, step_with_front_panel,
+};
 use sw_cdp1802_isa::{Cdp1802, ExternalFlag, Instruction, Reg};
 use sw_isa_core::Architecture;
 
@@ -175,6 +177,67 @@ fn negated_ef_branch_takes_when_flag_is_clear() {
     step(&mut state, &mut mem).unwrap();
 
     assert_eq!(state.pc(), 0x1240);
+}
+
+#[test]
+fn out_writes_memory_at_rx_to_hex_display_and_increments_rx() {
+    let mut mem = Memory::default();
+    write_insn(&mut mem, 0, Instruction::Output { port: 1 });
+    mem.write_byte(0x2000, 0xAB);
+    let mut state = CpuState::new();
+    state.x = 1;
+    state.write_reg(1, 0x2000);
+    let mut board = FrontPanel::new();
+
+    step_with_front_panel(&mut state, &mut mem, Some(&mut board)).unwrap();
+
+    assert_eq!(board.hex_display, 0xAB);
+    assert_eq!(state.read_reg(1), 0x2001);
+    assert_eq!(state.pc(), 1);
+}
+
+#[test]
+fn inp_reads_latch_to_d_and_memory_at_rx() {
+    let mut mem = Memory::default();
+    write_insn(&mut mem, 0, Instruction::Input { port: 1 });
+    let mut state = CpuState::new();
+    state.x = 1;
+    state.write_reg(1, 0x2000);
+    let mut board = FrontPanel::new();
+    board.input_latch = 0x5C;
+    board.keypad = 0x0C;
+
+    step_with_front_panel(&mut state, &mut mem, Some(&mut board)).unwrap();
+
+    assert_eq!(state.d, 0x5C);
+    assert_eq!(mem.read_byte(0x2000), 0x5C);
+    assert_eq!(state.read_reg(1), 0x2000);
+}
+
+#[test]
+fn front_panel_maps_input_pressed_to_ef4_and_q_to_led() {
+    let mut mem = Memory::default();
+    let mut addr = 0;
+    addr = write_insn(&mut mem, addr, Instruction::SetQ);
+    write_insn(
+        &mut mem,
+        addr,
+        Instruction::BranchExternalFlag {
+            flag: ExternalFlag::Ef4,
+            expected: true,
+            target: 0x20,
+        },
+    );
+    let mut state = CpuState::new();
+    let mut board = FrontPanel::new();
+    board.input_pressed = true;
+
+    step_with_front_panel(&mut state, &mut mem, Some(&mut board)).unwrap();
+    assert!(board.q_led);
+
+    step_with_front_panel(&mut state, &mut mem, Some(&mut board)).unwrap();
+    assert_eq!(state.pc(), 0x20);
+    assert!(state.external_flag(ExternalFlag::Ef4));
 }
 
 #[test]

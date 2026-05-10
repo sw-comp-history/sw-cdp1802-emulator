@@ -105,8 +105,9 @@ Board {
 Map the first simple ports as emulator policy, not as universal 1802
 truth:
 
-- `OUT 1`: write `D` or memory byte to the two-digit hex display.
-- `INP 1`: read keypad/input latch into `D`.
+- `OUT 1`: write the byte output by the CPU to the two-digit hex
+  display.
+- `INP 1`: read the keypad/input latch byte into the CPU input path.
 - `EF4`: report input button / strobe state.
 - `Q`: expose one visible LED bit.
 
@@ -114,6 +115,18 @@ The exact `INP`/`OUT` data movement must follow the 1802 instruction
 manual when those opcodes are implemented. The board mapping should
 live above that CPU behavior so alternate boards can choose different
 port meanings later.
+
+The current front-panel implementation uses this narrow mapping:
+
+- CPU `OUT 1` outputs `M(R(X))`, increments `R(X)`, and updates
+  `FrontPanel::hex_display`.
+- CPU `INP 1` reads `FrontPanel::input_latch`, writes it to
+  `M(R(X))`, and copies it into `D`.
+- `FrontPanel::input_pressed` is mirrored to CPU `EF4` before each
+  front-panel step.
+- CPU `Q` is mirrored to `FrontPanel::q_led`.
+- Ports 2 through 7 are decoded by the CPU, but the simple front panel
+  leaves them unmapped.
 
 ### Phase 3: Memory Bitmap Video View
 

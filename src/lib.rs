@@ -2,10 +2,12 @@
 //!
 //! Minimal emulator core for the CDP1802 demo subset.
 
+pub mod board;
 pub mod exec;
 pub mod memory;
 pub mod state;
 
-pub use exec::{ExecError, run, step};
+pub use board::FrontPanel;
+pub use exec::{ExecError, run, run_with_front_panel, step, step_with_front_panel};
 pub use memory::Memory;
 pub use state::CpuState;

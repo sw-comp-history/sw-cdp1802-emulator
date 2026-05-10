@@ -1,6 +1,6 @@
 number = 9
 slug = "io-ports-front-panel"
-status = "pending"
+status = "in-progress"
 description = """
 Step 9 of saga `cdp1802-emulator-asm-demo`: ELF-style ports and front panel.
 ..."""
