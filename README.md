@@ -28,6 +28,19 @@ Run the demo:
 cargo run --example cdp1802_demo
 ```
 
+Run the ELF-style I/O board demo:
+
+```bash
+cargo run --example io_board_demo
+```
+
+The I/O board demo assembles a small CDP1802 program, runs it with the
+`FrontPanel` model, and prints the source, machine bytes, final
+registers, front-panel state, RAM bytes at `0x2000..0x2002`, and a
+64 x 32 text video frame. It exercises Q as a visible LED, EF4 as the
+input strobe, `OUT 1` as a two-digit hex display write, `INP 1` as an
+input latch read, and the RAM-backed video view.
+
 ## Sibling layout
 
 Cross-crate deps assume sibling clones at

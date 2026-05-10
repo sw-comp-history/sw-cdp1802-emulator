@@ -1,6 +1,6 @@
 number = 3
 slug = "io-board-demo-regression-docs"
-status = "pending"
+status = "in-progress"
 description = 'Step 3 of saga `io-board-demo`: regression test and docs.\n\nGoal: make the I...'
 role = "production"
 context_files = []

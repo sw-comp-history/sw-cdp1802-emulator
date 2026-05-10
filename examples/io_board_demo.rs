@@ -5,9 +5,9 @@ use sw_cdp1802_emulator::{
     CpuState, FrontPanel, Memory, VIDEO_BASE, VideoView, run_with_front_panel,
 };
 
-const MAX_STEPS: u64 = 100;
+pub const MAX_STEPS: u64 = 100;
 
-const DEMO_SOURCE: &str = r#"
+pub const DEMO_SOURCE: &str = r#"
         ORG 0x0000
         SEQ
         LDI 0x20
