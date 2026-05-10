@@ -8,3 +8,6 @@ license = "MIT"
 [dependencies]
 sw-isa-core = { path = "../../sw-langtools/sw-isa-core" }
 sw-cdp1802-isa = { path = "../sw-cdp1802-isa" }
+
+[dev-dependencies]
+sw-cdp1802-asm = { path = "../sw-cdp1802-asm" }

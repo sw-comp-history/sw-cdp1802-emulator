@@ -3,9 +3,18 @@
 version = 4
 
 [[package]]
+name = "sw-cdp1802-asm"
+version = "0.1.0"
+dependencies = [
+ "sw-cdp1802-isa",
+ "sw-isa-core",
+]
+
+[[package]]
 name = "sw-cdp1802-emulator"
 version = "0.1.0"
 dependencies = [
+ "sw-cdp1802-asm",
  "sw-cdp1802-isa",
  "sw-isa-core",
 ]

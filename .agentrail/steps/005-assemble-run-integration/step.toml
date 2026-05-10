@@ -1,6 +1,6 @@
 number = 5
 slug = "assemble-run-integration"
-status = "pending"
+status = "in-progress"
 description = 'Step 5 of saga `cdp1802-emulator-asm-demo`: assemble-run integration.\n\nGoal...'
 role = "legacy"
 context_files = []
