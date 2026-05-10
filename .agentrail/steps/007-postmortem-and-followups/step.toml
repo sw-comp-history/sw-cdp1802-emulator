@@ -1,8 +1,9 @@
 number = 7
 slug = "postmortem-and-followups"
-status = "in-progress"
+status = "completed"
 description = 'Step 7 of saga `cdp1802-emulator-asm-demo`: postmortem and followups.\n\nGoal...'
 role = "legacy"
 context_files = []
 created_at = "2026-05-10T15:56:47"
-commits = []
+completed_at = "2026-05-10T16:11:46"
+commits = ["19922b80b54ae2ccf9d0788ff19b091cbbe74cf0"]

@@ -1,0 +1,1 @@
+Captured the CDP1802 assembler/emulator demo postmortem, including delivered behavior, validation commands, cross-repo commit anchors, IBM 1130 lessons, CDP1802 differences, limitations, and the recommended ELF-style I/O follow-up path.
