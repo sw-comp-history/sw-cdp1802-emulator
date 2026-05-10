@@ -1,0 +1,125 @@
+use sw_cdp1802_emulator::{CpuState, ExecError, Memory, run, step};
+use sw_cdp1802_isa::{Cdp1802, Instruction, Reg};
+use sw_isa_core::Architecture;
+
+fn write_insn(mem: &mut Memory, addr: u16, insn: Instruction) -> u16 {
+    let mut buf = [0u8; 2];
+    let n = Cdp1802::encode(&insn, &mut buf).unwrap();
+    mem.load_bytes(addr, &buf[..n]);
+    addr.wrapping_add(n as u16)
+}
+
+#[test]
+fn initial_state_matches_demo_entry_contract() {
+    let state = CpuState::new();
+    assert_eq!(state.p, 0);
+    assert_eq!(state.x, 0);
+    assert_eq!(state.pc(), 0);
+    assert_eq!(state.r, [0; 16]);
+    assert!(!state.halted);
+}
+
+#[test]
+fn ldi_loads_d_and_advances_pc() {
+    let mut mem = Memory::default();
+    write_insn(&mut mem, 0, Instruction::LoadImmediate { value: 0x42 });
+    let mut state = CpuState::new();
+    step(&mut state, &mut mem).unwrap();
+    assert_eq!(state.d, 0x42);
+    assert_eq!(state.pc(), 2);
+}
+
+#[test]
+fn phi_and_plo_write_register_halves_from_d() {
+    let mut mem = Memory::default();
+    let mut addr = 0;
+    addr = write_insn(&mut mem, addr, Instruction::LoadImmediate { value: 0x20 });
+    addr = write_insn(
+        &mut mem,
+        addr,
+        Instruction::PutHigh {
+            reg: Reg::new_masked(1),
+        },
+    );
+    addr = write_insn(&mut mem, addr, Instruction::LoadImmediate { value: 0x34 });
+    write_insn(
+        &mut mem,
+        addr,
+        Instruction::PutLow {
+            reg: Reg::new_masked(1),
+        },
+    );
+    let mut state = CpuState::new();
+    run(&mut state, &mut mem, 4).unwrap();
+    assert_eq!(state.read_reg(1), 0x2034);
+}
+
+#[test]
+fn str_stores_d_at_register_address() {
+    let mut mem = Memory::default();
+    write_insn(
+        &mut mem,
+        0,
+        Instruction::Store {
+            reg: Reg::new_masked(1),
+        },
+    );
+    let mut state = CpuState::new();
+    state.d = 0x7A;
+    state.write_reg(1, 0x2000);
+    step(&mut state, &mut mem).unwrap();
+    assert_eq!(mem.read_byte(0x2000), 0x7A);
+}
+
+#[test]
+fn inc_increments_selected_register() {
+    let mut mem = Memory::default();
+    write_insn(
+        &mut mem,
+        0,
+        Instruction::Increment {
+            reg: Reg::new_masked(1),
+        },
+    );
+    let mut state = CpuState::new();
+    state.write_reg(1, 0xFFFF);
+    step(&mut state, &mut mem).unwrap();
+    assert_eq!(state.read_reg(1), 0);
+}
+
+#[test]
+fn br_replaces_low_byte_in_current_pc_page() {
+    let mut mem = Memory::default();
+    write_insn(&mut mem, 0x1200, Instruction::Branch { target: 0x34 });
+    let mut state = CpuState::new();
+    state.set_pc(0x1200);
+    step(&mut state, &mut mem).unwrap();
+    assert_eq!(state.pc(), 0x1234);
+}
+
+#[test]
+fn idl_halts_and_second_step_errors() {
+    let mut mem = Memory::default();
+    write_insn(&mut mem, 0, Instruction::Idle);
+    let mut state = CpuState::new();
+    step(&mut state, &mut mem).unwrap();
+    assert!(state.halted);
+    assert_eq!(state.pc(), 1);
+    assert_eq!(step(&mut state, &mut mem), Err(ExecError::Halted));
+}
+
+#[test]
+fn contract_demo_bytes_run_to_expected_memory_state() {
+    let bytes = [
+        0xF8, 0x20, 0xB1, 0xF8, 0x00, 0xA1, 0xF8, 0x42, 0x51, 0x11, 0xF8, 0x43, 0x51, 0x11, 0xF8,
+        0x44, 0x51, 0x30, 0x13, 0x00,
+    ];
+    let mut mem = Memory::default();
+    mem.load_bytes(0, &bytes);
+    let mut state = CpuState::new();
+    let steps = run(&mut state, &mut mem, 100).unwrap();
+    assert_eq!(steps, 14);
+    assert!(state.halted);
+    assert_eq!(mem.read_range(0x2000, 3), vec![0x42, 0x43, 0x44]);
+    assert_eq!(state.read_reg(1), 0x2002);
+}
