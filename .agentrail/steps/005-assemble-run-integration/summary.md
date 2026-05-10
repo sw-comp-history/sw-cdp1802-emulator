@@ -1,0 +1,1 @@
+Added the assemble-run integration test: the emulator now dev-depends on sw-cdp1802-asm, assembles the contract demo source, asserts exact bytes, loads memory, runs to IDL, and verifies final RAM and R1 state. Also tracked the generated docs requested by the user.

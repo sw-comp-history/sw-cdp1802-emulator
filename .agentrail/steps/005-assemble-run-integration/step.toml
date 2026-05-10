@@ -1,8 +1,9 @@
 number = 5
 slug = "assemble-run-integration"
-status = "in-progress"
+status = "completed"
 description = 'Step 5 of saga `cdp1802-emulator-asm-demo`: assemble-run integration.\n\nGoal...'
 role = "legacy"
 context_files = []
 created_at = "2026-05-10T15:50:53"
-commits = []
+completed_at = "2026-05-10T15:53:53"
+commits = ["c7d49241d356485bb2a5b0a1b64315a7ccf649b6"]

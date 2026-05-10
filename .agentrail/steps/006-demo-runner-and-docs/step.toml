@@ -1,0 +1,8 @@
+number = 6
+slug = "demo-runner-and-docs"
+status = "pending"
+description = 'Step 6 of saga `cdp1802-emulator-asm-demo`: demo runner and docs.\n\nGoal: ad...'
+role = "legacy"
+context_files = []
+created_at = "2026-05-10T15:53:53"
+commits = []
