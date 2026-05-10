@@ -1,0 +1,1 @@
+Implemented the CDP1802 ISA demo subset in sibling sw-cdp1802-isa commit 603a1b7: registers, instruction model, encode/decode, Architecture impl, branch constants, and exact demo byte-stream tests.

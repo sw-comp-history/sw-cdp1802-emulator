@@ -1,8 +1,9 @@
 number = 2
 slug = "isa-readiness-check"
-status = "pending"
+status = "completed"
 description = 'Step 2 of saga `cdp1802-emulator-asm-demo`: ISA readiness check.\n\nGoal: mak...'
 role = "legacy"
 context_files = []
 created_at = "2026-05-10T15:38:11"
-commits = []
+completed_at = "2026-05-10T15:42:17"
+commits = ["8a5caac07ee6f441c50dd6febb6780db96c96635"]
