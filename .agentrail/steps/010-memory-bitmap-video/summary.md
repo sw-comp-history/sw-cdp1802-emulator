@@ -1,0 +1,1 @@
+Implemented a deterministic 64x32 RAM-backed monochrome video view over 0x2000..0x20ff, documented MSB-first row layout, and added text rendering plus tests for geometry, pixel mapping, output text, and newline behavior.
