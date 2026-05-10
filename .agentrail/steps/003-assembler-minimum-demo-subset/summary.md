@@ -1,0 +1,1 @@
+Implemented the CDP1802 demo assembler subset in sibling sw-cdp1802-asm commit 1bda911: line parser, labels, ORG, hex/decimal literals, R0-R15 operands, demo mnemonics, byte emission through sw-cdp1802-isa, and exact demo tests.
