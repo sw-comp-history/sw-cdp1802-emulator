@@ -1,0 +1,1 @@
+Implemented the minimal CDP1802 INP/OUT front-panel path: ISA and assembler support for ports 1..7, emulator CPU port semantics, an ELF-style FrontPanel model for port 1, EF4 input strobe, Q LED mirroring, docs, and assemble-run coverage.
