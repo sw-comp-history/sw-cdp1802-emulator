@@ -1,6 +1,6 @@
 number = 1
 slug = "io-board-demo-contract"
-status = "pending"
+status = "in-progress"
 description = 'Step 1 of saga `io-board-demo`: demo contract.\n\nGoal: define the exact ELF-...'
 role = "production"
 context_files = []
