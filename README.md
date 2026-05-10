@@ -4,6 +4,18 @@ RCA CDP1802 Emulator: instruction execution semantics.
 
 CDP stands for CMOS Digital Processor.
 
+## Brief history
+
+RCA introduced the CDP1802, also known as the COSMAC 1802, in the
+mid-1970s as an early CMOS 8-bit microprocessor derived from Joseph
+Weisbecker's COSMAC work. Its low-power static CMOS design made it
+popular in hobbyist systems such as the COSMAC ELF, ELF-II, and COSMAC
+VIP, where programs could be entered from switches or keypads and
+observed through LEDs, hex displays, and simple video. Radiation-
+hardened and high-reliability versions also made the 1802 notable in
+embedded and spacecraft systems, including science instruments and
+satellite subsystems.
+
 ## Status
 
 `0.1.0` demo subset. The emulator can execute the first assembler/
