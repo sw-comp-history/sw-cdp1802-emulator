@@ -1,0 +1,9 @@
+number = 3
+slug = "io-board-demo-regression-docs"
+status = "pending"
+description = 'Step 3 of saga `io-board-demo`: regression test and docs.\n\nGoal: make the I...'
+role = "production"
+context_files = []
+created_at = "2026-05-10T16:42:38"
+task_type = "emulator-io"
+commits = []

@@ -1,0 +1,9 @@
+number = 1
+slug = "io-board-demo-contract"
+status = "pending"
+description = 'Step 1 of saga `io-board-demo`: demo contract.\n\nGoal: define the exact ELF-...'
+role = "production"
+context_files = []
+created_at = "2026-05-10T16:42:19"
+task_type = "docs-planning"
+commits = []
