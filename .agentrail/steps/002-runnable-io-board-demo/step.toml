@@ -1,6 +1,6 @@
 number = 2
 slug = "runnable-io-board-demo"
-status = "pending"
+status = "in-progress"
 description = 'Step 2 of saga `io-board-demo`: runnable I/O board demo.\n\nGoal: add a runna...'
 role = "production"
 context_files = []
