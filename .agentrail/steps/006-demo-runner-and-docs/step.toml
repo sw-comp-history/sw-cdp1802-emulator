@@ -1,8 +1,9 @@
 number = 6
 slug = "demo-runner-and-docs"
-status = "in-progress"
+status = "completed"
 description = 'Step 6 of saga `cdp1802-emulator-asm-demo`: demo runner and docs.\n\nGoal: ad...'
 role = "legacy"
 context_files = []
 created_at = "2026-05-10T15:53:53"
-commits = []
+completed_at = "2026-05-10T15:56:47"
+commits = ["1f7ad7b628091077f13fb6b730238ad6ab37ad02"]

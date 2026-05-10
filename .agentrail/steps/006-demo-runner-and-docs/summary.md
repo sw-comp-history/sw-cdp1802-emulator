@@ -1,0 +1,1 @@
+Added a runnable CDP1802 demo example that assembles the contract source, prints source and bytes, runs the emulator, and prints step count, final D/P/X/R1, and RAM 0x2000..0x2002. README now documents cargo run --example cdp1802_demo.
