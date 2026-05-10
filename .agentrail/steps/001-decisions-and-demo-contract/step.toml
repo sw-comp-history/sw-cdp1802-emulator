@@ -1,6 +1,6 @@
 number = 1
 slug = "decisions-and-demo-contract"
-status = "pending"
+status = "in-progress"
 description = """
 Step 1 of saga `cdp1802-emulator-asm-demo`: decisions and demo contract.
 
