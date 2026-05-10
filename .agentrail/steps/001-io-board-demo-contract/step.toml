@@ -1,9 +1,10 @@
 number = 1
 slug = "io-board-demo-contract"
-status = "in-progress"
+status = "completed"
 description = 'Step 1 of saga `io-board-demo`: demo contract.\n\nGoal: define the exact ELF-...'
 role = "production"
 context_files = []
 created_at = "2026-05-10T16:42:19"
+completed_at = "2026-05-10T16:44:36"
 task_type = "docs-planning"
-commits = []
+commits = ["91e2b7d2dac101102bcb86f69ebf860bd3983d57"]

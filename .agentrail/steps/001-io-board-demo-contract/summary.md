@@ -1,0 +1,1 @@
+Defined the deterministic CDP1802 I/O board demo contract, including assembly source, expected bytes, initial board inputs, final CPU/front-panel/RAM/video state, output sections, and out-of-scope constraints.
