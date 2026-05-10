@@ -1,0 +1,1 @@
+Implemented the CDP1802 emulator core subset: byte memory, CPU state, fetch/decode/execute stepping, bounded run loop, and semantics/tests for IDL, INC, BR, STR, PLO, PHI, and LDI including the contract demo bytes.
