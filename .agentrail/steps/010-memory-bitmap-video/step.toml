@@ -1,6 +1,6 @@
 number = 10
 slug = "memory-bitmap-video"
-status = "pending"
+status = "in-progress"
 description = """
 Step 10 of saga `cdp1802-emulator-asm-demo`: memory bitmap video view.
 

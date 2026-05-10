@@ -6,8 +6,10 @@ pub mod board;
 pub mod exec;
 pub mod memory;
 pub mod state;
+pub mod video;
 
 pub use board::FrontPanel;
 pub use exec::{ExecError, run, run_with_front_panel, step, step_with_front_panel};
 pub use memory::Memory;
 pub use state::CpuState;
+pub use video::{VIDEO_BASE, VIDEO_HEIGHT, VIDEO_SIZE_BYTES, VIDEO_WIDTH, VideoView};

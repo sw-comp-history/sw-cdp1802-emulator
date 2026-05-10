@@ -137,7 +137,8 @@ base: 0x2000
 width: 64 pixels
 height: 32 pixels
 bytes: 256
-bit order: documented and tested
+bit order: most-significant bit first within each byte
+row layout: 8 consecutive bytes per row, 32 rows
 ```
 
 This is not cycle-accurate CDP1861 DMA. It is an easy framebuffer view
@@ -150,6 +151,13 @@ The user-facing renderer can be plain text first:
 # for set pixel
 . for clear pixel
 ```
+
+The current implementation provides `VideoView::elf_64x32()` over
+`0x2000..0x20ff`. Pixel `(0, 0)` is bit 7 of byte `0x2000`, pixel
+`(7, 0)` is bit 0 of byte `0x2000`, pixel `(8, 0)` is bit 7 of byte
+`0x2001`, and pixel `(0, 1)` is bit 7 of byte `0x2008`. The text
+renderer emits exactly 32 lines of 64 characters with no trailing
+newline.
 
 A later UI can scale each source bit into 2x2 or 4x4 display pixels.
 
