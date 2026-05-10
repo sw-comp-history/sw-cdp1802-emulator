@@ -1,0 +1,1 @@
+Implemented CDP1802 Q and EF bit support across the ISA, assembler, and emulator: SEQ/REQ, B1..B4, BN1..BN4, CPU Q/EF state, and focused unit tests.
