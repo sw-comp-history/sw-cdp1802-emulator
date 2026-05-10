@@ -53,8 +53,24 @@ fn exec_instruction(state: &mut CpuState, mem: &mut Memory, insn: Instruction) {
             let high = state.pc() & 0xFF00;
             state.set_pc(high | target as u16);
         }
+        Instruction::BranchExternalFlag {
+            flag,
+            expected,
+            target,
+        } => {
+            if state.external_flag(flag) == expected {
+                let high = state.pc() & 0xFF00;
+                state.set_pc(high | target as u16);
+            }
+        }
         Instruction::Store { reg } => {
             mem.write_byte(state.read_reg(reg.index_u8()), state.d);
+        }
+        Instruction::ResetQ => {
+            state.q = false;
+        }
+        Instruction::SetQ => {
+            state.q = true;
         }
         Instruction::PutLow { reg } => {
             let idx = reg.index_u8();

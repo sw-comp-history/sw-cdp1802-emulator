@@ -1,5 +1,5 @@
 use sw_cdp1802_emulator::{CpuState, ExecError, Memory, run, step};
-use sw_cdp1802_isa::{Cdp1802, Instruction, Reg};
+use sw_cdp1802_isa::{Cdp1802, ExternalFlag, Instruction, Reg};
 use sw_isa_core::Architecture;
 
 fn write_insn(mem: &mut Memory, addr: u16, insn: Instruction) -> u16 {
@@ -16,6 +16,8 @@ fn initial_state_matches_demo_entry_contract() {
     assert_eq!(state.x, 0);
     assert_eq!(state.pc(), 0);
     assert_eq!(state.r, [0; 16]);
+    assert!(!state.q);
+    assert_eq!(state.ef, [false; 4]);
     assert!(!state.halted);
 }
 
@@ -95,6 +97,84 @@ fn br_replaces_low_byte_in_current_pc_page() {
     state.set_pc(0x1200);
     step(&mut state, &mut mem).unwrap();
     assert_eq!(state.pc(), 0x1234);
+}
+
+#[test]
+fn seq_and_req_set_and_reset_q() {
+    let mut mem = Memory::default();
+    let mut addr = 0;
+    addr = write_insn(&mut mem, addr, Instruction::SetQ);
+    write_insn(&mut mem, addr, Instruction::ResetQ);
+    let mut state = CpuState::new();
+
+    step(&mut state, &mut mem).unwrap();
+    assert!(state.q);
+    assert_eq!(state.pc(), 1);
+
+    step(&mut state, &mut mem).unwrap();
+    assert!(!state.q);
+    assert_eq!(state.pc(), 2);
+}
+
+#[test]
+fn ef_branch_takes_when_expected_flag_matches() {
+    let mut mem = Memory::default();
+    write_insn(
+        &mut mem,
+        0x1200,
+        Instruction::BranchExternalFlag {
+            flag: ExternalFlag::Ef4,
+            expected: true,
+            target: 0x34,
+        },
+    );
+    let mut state = CpuState::new();
+    state.set_pc(0x1200);
+    state.set_external_flag(ExternalFlag::Ef4, true);
+
+    step(&mut state, &mut mem).unwrap();
+
+    assert_eq!(state.pc(), 0x1234);
+}
+
+#[test]
+fn ef_branch_falls_through_when_expected_flag_does_not_match() {
+    let mut mem = Memory::default();
+    write_insn(
+        &mut mem,
+        0x1200,
+        Instruction::BranchExternalFlag {
+            flag: ExternalFlag::Ef2,
+            expected: true,
+            target: 0x34,
+        },
+    );
+    let mut state = CpuState::new();
+    state.set_pc(0x1200);
+
+    step(&mut state, &mut mem).unwrap();
+
+    assert_eq!(state.pc(), 0x1202);
+}
+
+#[test]
+fn negated_ef_branch_takes_when_flag_is_clear() {
+    let mut mem = Memory::default();
+    write_insn(
+        &mut mem,
+        0x1200,
+        Instruction::BranchExternalFlag {
+            flag: ExternalFlag::Ef1,
+            expected: false,
+            target: 0x40,
+        },
+    );
+    let mut state = CpuState::new();
+    state.set_pc(0x1200);
+
+    step(&mut state, &mut mem).unwrap();
+
+    assert_eq!(state.pc(), 0x1240);
 }
 
 #[test]

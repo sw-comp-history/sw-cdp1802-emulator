@@ -1,6 +1,6 @@
 number = 8
 slug = "io-bits-q-ef"
-status = "pending"
+status = "in-progress"
 description = """
 Step 8 of saga `cdp1802-emulator-asm-demo`: I/O bits Q and EF.
 
