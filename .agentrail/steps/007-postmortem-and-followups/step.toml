@@ -1,6 +1,6 @@
 number = 7
 slug = "postmortem-and-followups"
-status = "pending"
+status = "in-progress"
 description = 'Step 7 of saga `cdp1802-emulator-asm-demo`: postmortem and followups.\n\nGoal...'
 role = "legacy"
 context_files = []
