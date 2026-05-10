@@ -1,6 +1,6 @@
 number = 1
 slug = "decisions-and-demo-contract"
-status = "in-progress"
+status = "completed"
 description = """
 Step 1 of saga `cdp1802-emulator-asm-demo`: decisions and demo contract.
 
@@ -8,5 +8,6 @@ Goa..."""
 role = "production"
 context_files = []
 created_at = "2026-05-10T15:34:15"
+completed_at = "2026-05-10T15:38:11"
 task_type = "docs-planning"
-commits = []
+commits = ["c319f9331a2288e0d7d950f9b57043ae38efb88e"]

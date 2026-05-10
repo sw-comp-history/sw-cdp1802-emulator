@@ -1,0 +1,11 @@
+{
+  "task_type": "docs-planning",
+  "state": {
+    "number": 1,
+    "step": "decisions-and-demo-contract"
+  },
+  "action": "Read agentrail step prompt, gen-isa scaffolder docs, IBM 1130 asm/emulator demo examples, and CDP1802 skeleton repos; added docs/demo-contract.md; ran markdown-checker; committed the docs and agentrail step state.",
+  "result": "success",
+  "reward": 1,
+  "timestamp": "2026-05-10T15:38:11"
+}

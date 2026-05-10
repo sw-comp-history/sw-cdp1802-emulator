@@ -1,0 +1,8 @@
+number = 2
+slug = "isa-readiness-check"
+status = "pending"
+description = 'Step 2 of saga `cdp1802-emulator-asm-demo`: ISA readiness check.\n\nGoal: mak...'
+role = "legacy"
+context_files = []
+created_at = "2026-05-10T15:38:11"
+commits = []

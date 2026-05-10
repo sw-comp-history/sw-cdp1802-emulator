@@ -1,0 +1,1 @@
+Defined the first CDP1802 assembler/emulator demo contract: exact source, expected bytes, minimal instruction subset, reset model, halt convention, assembler subset, success criteria, and IBM 1130/gen-isa references.
