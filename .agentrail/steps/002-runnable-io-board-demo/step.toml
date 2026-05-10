@@ -1,9 +1,10 @@
 number = 2
 slug = "runnable-io-board-demo"
-status = "in-progress"
+status = "completed"
 description = 'Step 2 of saga `io-board-demo`: runnable I/O board demo.\n\nGoal: add a runna...'
 role = "production"
 context_files = []
 created_at = "2026-05-10T16:42:31"
+completed_at = "2026-05-10T16:47:09"
 task_type = "emulator-io"
-commits = []
+commits = ["bee44f550c9578e070b288a6ae7add591752db4e"]

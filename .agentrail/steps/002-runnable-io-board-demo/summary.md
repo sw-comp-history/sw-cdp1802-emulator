@@ -1,0 +1,1 @@
+Added examples/io_board_demo.rs, a deterministic runnable ELF-style I/O board demo that assembles the contract program, initializes FrontPanel inputs, runs with run_with_front_panel, and prints source, bytes, registers, front-panel state, RAM, and a text video frame.

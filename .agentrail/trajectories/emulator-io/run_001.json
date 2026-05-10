@@ -1,0 +1,11 @@
+{
+  "task_type": "emulator-io",
+  "state": {
+    "number": 2,
+    "step": "runnable-io-board-demo"
+  },
+  "action": "Read the I/O board docs, demo contract, existing runnable demo, board/video modules, and front-panel test; added the runnable example; ran cargo fmt --check, cargo test, and cargo run --example io_board_demo.",
+  "result": "success",
+  "reward": 1,
+  "timestamp": "2026-05-10T16:47:09"
+}
