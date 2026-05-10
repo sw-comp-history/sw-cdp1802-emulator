@@ -2,6 +2,8 @@
 
 RCA CDP1802 Emulator: instruction execution semantics.
 
+CDP stands for CMOS Digital Processor.
+
 ## Status
 
 `0.1.0` demo subset. The emulator can execute the first assembler/
