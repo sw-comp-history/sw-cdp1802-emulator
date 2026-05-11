@@ -1,6 +1,6 @@
 number = 1
 slug = "complete-demo-state-dumps"
-status = "pending"
+status = "in-progress"
 description = """
 Step 1 of saga full-cdp1802-coverage: complete demo state dumps.
 

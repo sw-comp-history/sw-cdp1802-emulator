@@ -1,7 +1,7 @@
 //! Runnable CDP1802 assembler/emulator demo.
 
 use sw_cdp1802_asm::assemble;
-use sw_cdp1802_emulator::{CpuState, Memory, run};
+use sw_cdp1802_emulator::{CpuState, Memory, format_cpu_state, run};
 
 const MAX_STEPS: u64 = 100;
 
@@ -26,11 +26,8 @@ fn main() {
         "--- ran {steps} instructions; halted = {} ---",
         state.halted
     );
-    println!("--- final registers ---");
-    println!("D  = 0x{:02x}", state.d);
-    println!("P  = 0x{:x}", state.p);
-    println!("X  = 0x{:x}", state.x);
-    println!("R1 = 0x{:04x}", state.read_reg(1));
+    println!("--- final CPU state ---");
+    print!("{}", format_cpu_state(&state));
     println!();
 
     println!("--- ram 0x2000..0x2002 ---");

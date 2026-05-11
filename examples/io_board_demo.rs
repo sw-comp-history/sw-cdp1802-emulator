@@ -2,7 +2,7 @@
 
 use sw_cdp1802_asm::assemble;
 use sw_cdp1802_emulator::{
-    CpuState, FrontPanel, Memory, VIDEO_BASE, VideoView, run_with_front_panel,
+    CpuState, FrontPanel, Memory, VIDEO_BASE, VideoView, format_cpu_state, run_with_front_panel,
 };
 
 pub const MAX_STEPS: u64 = 100;
@@ -41,13 +41,8 @@ fn main() {
         "--- ran {steps} instructions; halted = {} ---",
         state.halted
     );
-    println!("--- final registers ---");
-    println!("D   = 0x{:02x}", state.d);
-    println!("P   = 0x{:x}", state.p);
-    println!("X   = 0x{:x}", state.x);
-    println!("R1  = 0x{:04x}", state.read_reg(1));
-    println!("Q   = {}", state.q);
-    println!("EF4 = {}", state.ef[3]);
+    println!("--- final CPU state ---");
+    print!("{}", format_cpu_state(&state));
     println!();
 
     println!("--- final front panel ---");

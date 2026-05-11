@@ -6,7 +6,7 @@ use std::io::{self, Write};
 use sw_cdp1802_asm::assemble;
 use sw_cdp1802_emulator::{
     CpuState, JoystickRcBoard, Memory, VIDEO_BASE, VIDEO_HEIGHT, VIDEO_WIDTH, VideoView,
-    run_with_joystick,
+    format_cpu_state, run_with_joystick,
 };
 
 pub const MAX_STEPS: u64 = 500;
@@ -115,6 +115,8 @@ fn run_and_print(x: u8, y: u8) {
         "--- ran {} instructions; halted = {} ---",
         frame.steps, frame.state.halted
     );
+    println!("--- final CPU state ---");
+    print!("{}", format_cpu_state(&frame.state));
     println!(
         "ball bucket = ({x_bucket}, {y_bucket}); R1 = 0x{:04x}",
         frame.state.read_reg(1)
