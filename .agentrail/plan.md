@@ -1,8 +1,8 @@
 # CDP1802 I/O Board Demo Saga
 
-Goal: build a runnable demonstration that simulates an ELF-style
-CDP1802 I/O board using the existing assembler, emulator, front-panel,
-and RAM-backed video pieces.
+Goal: build runnable demonstrations that simulate ELF-style CDP1802
+I/O board behavior using the existing assembler, emulator,
+front-panel, joystick, and RAM-backed video pieces.
 
 Context to preserve for every step:
 
@@ -14,9 +14,11 @@ Context to preserve for every step:
 - Use `~/github/sw-vibe-coding/gen-isa` and the IBM 1130 examples as
   process references, especially for exact-byte tests and readable demo
   output. Do not copy IBM 1130 device semantics.
-- Keep this saga scoped to the already implemented substrate:
+- Keep the base demo scoped to the already implemented substrate:
   `SEQ`, `REQ`, `B4`/`BN4`, `INP 1`, `OUT 1`, `FrontPanel`, and
-  `VideoView::elf_64x32()`.
+  `VideoView::elf_64x32()`. Joystick follow-up work may add a
+  Rust-emulated resistor-capacitor joystick circuit and the minimum
+  board hooks needed for 1802 assembly to measure it.
 - Do not add CDP1861 DMA/timing, interrupts, serial/cassette, UI
   graphics, or unrelated opcodes unless a step explicitly revises the
   scope.
@@ -32,3 +34,9 @@ Planned steps:
 3. `io-board-demo-regression-docs` - Add a regression test for the demo
    and README/docs instructions that show how to run it and what output
    to expect.
+4. `joystick-rc-repl-demo` - Implement a Rust-emulated two-axis
+   resistor-capacitor joystick circuit plus a terminal REPL. The REPL
+   prompts for joystick X/Y values, runs 1802 assembly that pulses
+   output pins and polls input pins to measure the simulated RC delay,
+   updates a ball in the RAM-backed video buffer, and renders the grid
+   using spaces for clear pixels and a solid block for set pixels.

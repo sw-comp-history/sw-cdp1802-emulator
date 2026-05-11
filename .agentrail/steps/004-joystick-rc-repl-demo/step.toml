@@ -1,0 +1,9 @@
+number = 4
+slug = "joystick-rc-repl-demo"
+status = "pending"
+description = 'Step 4 of saga `io-board-demo`: joystick RC timing REPL demo.\n\nGoal: implem...'
+role = "production"
+context_files = []
+created_at = "2026-05-10T17:03:13"
+task_type = "emulator-io"
+commits = []
