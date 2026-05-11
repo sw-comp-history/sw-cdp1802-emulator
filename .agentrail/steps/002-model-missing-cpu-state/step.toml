@@ -1,6 +1,6 @@
 number = 2
 slug = "model-missing-cpu-state"
-status = "pending"
+status = "in-progress"
 description = """
 Step 2 of saga full-cdp1802-coverage: model missing CPU state.
 

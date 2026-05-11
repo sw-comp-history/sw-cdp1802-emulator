@@ -26,6 +26,8 @@ Important surrounding CPU state:
   the current opcode.
 - `T`: 8-bit temporary register used by interrupt/save behavior.
 - `IE`: interrupt-enable bit.
+- interrupt pending latch: emulator bookkeeping for a later interrupt
+  entry step.
 
 Special register conventions:
 
@@ -37,9 +39,20 @@ Special register conventions:
 - Any register can be selected as the active data/index register with
   `SEX Rn`.
 
-The current demo emulator implements `R0..R15`, `D`, `P`, `X`, and a
-halt flag. It does not yet implement `DF`, `Q`, `EF1..EF4`, `T`, `IE`,
-interrupts, DMA, or I/O ports.
+The current emulator state models `R0..R15`, `D`, `DF`, `P`, `X`, `T`,
+`Q`, `EF1..EF4`, `IE`, an interrupt-pending latch, a halt flag, and an
+instruction counter.
+
+Implemented behavior is still narrower than modeled state:
+
+- `D`, `P`, `X`, `Q`, `EF1..EF4`, halt state, instruction count, and
+  the scratchpad registers participate in the current executable demo
+  subset.
+- `DF`, `T`, `IE`, and interrupt-pending state are represented so ALU,
+  interrupt, and save/restore behavior can be implemented cleanly in
+  later steps.
+- DMA behavior, interrupt entry/return behavior, and CDP1861/Pixie
+  timing are still planned, not implemented.
 
 ## Historical I/O Shape
 
@@ -86,8 +99,11 @@ Add CPU state and opcodes for:
 - `SEQ` and `REQ`.
 - EF branch instructions.
 
-This enables tests for LED/speaker/cassette-style bit output and
-front-panel button polling. It is small and directly useful.
+This phase is implemented for the current demo subset. It enables tests
+for LED/speaker/cassette-style bit output and front-panel button
+polling. `DF`, `T`, and interrupt latches are now modeled as state, but
+their full opcode behavior belongs to the broader instruction-coverage
+saga steps.
 
 ### Phase 2: Simple Ports And Front Panel
 

@@ -24,8 +24,9 @@ dump, instruction count, halt state, final registers, and RAM
 - `sw-cdp1802-asm` now assembles the demo subset with `ORG`, colon
   labels, decimal and `0x` hex literals, and `R0..R15` operands.
 - `sw-cdp1802-emulator` now models 64 KiB byte-addressed memory,
-  `R0..R15`, `D`, `P`, `X`, a halt flag, instruction stepping, bounded
-  run, and the seven demo opcodes.
+  `R0..R15`, `D`, `DF`, `P`, `X`, `T`, `Q`, `EF1..EF4`, `IE`, interrupt
+  pending state, a halt flag, instruction stepping, bounded run, and
+  the current demo opcode subset.
 - `tests/run_demo.rs` proves the full path by assembling source,
   asserting exact bytes, loading RAM, running to `IDL`, and checking
   RAM/register post-state.
@@ -110,13 +111,14 @@ The CDP1802 brought different constraints than the IBM 1130:
 
 Current limitations are intentional:
 
-- Only seven opcodes are implemented.
-- `DF`, ALU operations, `SEP`, `SEX`, `SEQ`, `REQ`, EF branches,
-  `INP`, `OUT`, interrupts, DMA, and CDP1861/Pixie behavior are not
-  implemented yet.
+- The emulator implements a demo-oriented opcode subset, not the full
+  instruction set.
+- `DF`, `T`, `IE`, and interrupt-pending state are represented, but ALU
+  carry/borrow behavior, interrupt entry/return behavior, DMA, and
+  CDP1861/Pixie timing are not implemented yet.
 - The assembler has no expressions, includes, macros, disassembler, or
   object format.
-- The emulator has no cycle timing or board/device abstraction.
+- The emulator has no cycle timing.
 - Unsupported opcodes fail through decode/execution errors rather than
   emulating undefined hardware behavior.
 

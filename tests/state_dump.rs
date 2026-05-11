@@ -4,10 +4,14 @@ use sw_cdp1802_emulator::{CpuState, format_cpu_state};
 fn cpu_state_dump_includes_current_architectural_state() {
     let mut state = CpuState::new();
     state.d = 0x42;
+    state.df = true;
     state.p = 0x2;
     state.x = 0xf;
+    state.t = 0x2f;
     state.q = true;
     state.ef = [true, false, true, false];
+    state.interrupt_enabled = false;
+    state.interrupt_pending = true;
     state.halted = true;
     state.instr_count = 7;
     for i in 0..16 {
@@ -18,14 +22,17 @@ fn cpu_state_dump_includes_current_architectural_state() {
 
     for expected in [
         "D           = 0x42",
-        "DF          = <not modeled>",
+        "DF          = true",
         "P           = 0x2",
         "X           = 0xf",
+        "T           = 0x2f",
         "Q           = true",
         "EF1         = true",
         "EF2         = false",
         "EF3         = true",
         "EF4         = false",
+        "IE          = false",
+        "IRQ pending = true",
         "halted      = true",
         "instr_count = 7",
         "R0         = 0x1000",
