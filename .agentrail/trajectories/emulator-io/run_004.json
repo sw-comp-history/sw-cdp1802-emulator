@@ -1,0 +1,11 @@
+{
+  "task_type": "emulator-io",
+  "state": {
+    "number": 5,
+    "step": "commented-assembler-demos"
+  },
+  "action": "Added examples/asm/*.s for the base, I/O board, and joystick demos; replaced inline Rust assembly strings with include_str!; updated README; ran markdown validation, cargo fmt --check, cargo test, and all runnable demos including joystick smoke mode.",
+  "result": "success",
+  "reward": 1,
+  "timestamp": "2026-05-10T17:17:27"
+}

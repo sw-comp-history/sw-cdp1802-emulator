@@ -1,0 +1,1 @@
+Moved runnable demo assembly into checked-in .s source files under examples/asm, updated Rust examples/tests to include them at compile time with include_str!, and kept the assembly comments visible in demo output.
