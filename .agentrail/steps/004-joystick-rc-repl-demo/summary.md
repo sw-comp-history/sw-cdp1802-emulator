@@ -1,0 +1,1 @@
+Implemented the joystick RC timing demo: Rust now models a two-axis resistor-capacitor joystick board, the emulator can run with that board, a REPL example prompts for joystick X/Y and renders the ball with spaces and a solid block, and tests cover RC timing plus an assembled joystick frame.

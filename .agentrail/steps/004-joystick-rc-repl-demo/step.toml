@@ -1,9 +1,10 @@
 number = 4
 slug = "joystick-rc-repl-demo"
-status = "in-progress"
+status = "completed"
 description = 'Step 4 of saga `io-board-demo`: joystick RC timing REPL demo.\n\nGoal: implem...'
 role = "production"
 context_files = []
 created_at = "2026-05-10T17:03:13"
+completed_at = "2026-05-10T17:09:14"
 task_type = "emulator-io"
-commits = []
+commits = ["626827feba9840d9e1dc5e6b7844ba6bc25836e2"]
