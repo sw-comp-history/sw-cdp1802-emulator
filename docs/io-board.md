@@ -173,6 +173,27 @@ Only after simple board I/O works, add more faithful CDP1861 behavior:
 This is valuable for historical accuracy, but not needed for the first
 ELF-II-style board demo.
 
+### Joystick RC Timing Demo
+
+The joystick REPL demo models a simple two-axis analog joystick circuit
+like an ELF-II hobby add-on:
+
+- `OUT 2`: pulse the X-axis resistor-capacitor timing circuit.
+- `OUT 3`: pulse the Y-axis resistor-capacitor timing circuit.
+- `EF4`: report whether the currently pulsed axis has reached the
+  input threshold.
+
+Rust owns the analog side of the model. Each axis is a deterministic
+`0..255` potentiometer value mapped into four delay buckets. The CDP1802
+program owns the measurement and ball movement: it pulses an axis,
+polls `EF4` with `B4`, chooses a row/column bucket from the observed
+delay, writes a ball pixel into the `VideoView::elf_64x32()` RAM buffer,
+and halts for the REPL to render the screen.
+
+The terminal renderer uses spaces for clear pixels and a solid block for
+set pixels. There is still no CDP1861/Pixie DMA timing, interrupt, or
+composite-video behavior in this model.
+
 ## Recommended Saga Additions
 
 Add implementation steps after the current assembler/emulator demo saga

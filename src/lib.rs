@@ -8,8 +8,11 @@ pub mod memory;
 pub mod state;
 pub mod video;
 
-pub use board::FrontPanel;
-pub use exec::{ExecError, run, run_with_front_panel, step, step_with_front_panel};
+pub use board::{BoardIo, FrontPanel, JoystickAxis, JoystickRcBoard};
+pub use exec::{
+    ExecError, run, run_with_front_panel, run_with_joystick, step, step_with_front_panel,
+    step_with_joystick,
+};
 pub use memory::Memory;
 pub use state::CpuState;
 pub use video::{VIDEO_BASE, VIDEO_HEIGHT, VIDEO_SIZE_BYTES, VIDEO_WIDTH, VideoView};

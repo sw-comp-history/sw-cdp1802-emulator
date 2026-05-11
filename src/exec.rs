@@ -3,7 +3,7 @@
 use sw_cdp1802_isa::Instruction;
 use sw_isa_core::DecodeError;
 
-use crate::board::FrontPanel;
+use crate::board::{BoardIo, FrontPanel, JoystickRcBoard};
 use crate::memory::Memory;
 use crate::state::CpuState;
 
@@ -20,13 +20,29 @@ impl From<DecodeError> for ExecError {
 }
 
 pub fn step(state: &mut CpuState, mem: &mut Memory) -> Result<(), ExecError> {
-    step_with_front_panel(state, mem, None)
+    step_with_board::<FrontPanel>(state, mem, None)
 }
 
 pub fn step_with_front_panel(
     state: &mut CpuState,
     mem: &mut Memory,
-    mut board: Option<&mut FrontPanel>,
+    board: Option<&mut FrontPanel>,
+) -> Result<(), ExecError> {
+    step_with_board(state, mem, board)
+}
+
+pub fn step_with_joystick(
+    state: &mut CpuState,
+    mem: &mut Memory,
+    board: Option<&mut JoystickRcBoard>,
+) -> Result<(), ExecError> {
+    step_with_board(state, mem, board)
+}
+
+fn step_with_board<B: BoardIo>(
+    state: &mut CpuState,
+    mem: &mut Memory,
+    mut board: Option<&mut B>,
 ) -> Result<(), ExecError> {
     if state.halted {
         return Err(ExecError::Halted);
@@ -40,6 +56,10 @@ pub fn step_with_front_panel(
     state.advance_pc(size);
     state.instr_count += 1;
     exec_instruction(state, mem, board.as_deref_mut(), insn);
+    if let Some(board) = board.as_deref_mut() {
+        board.sync_outputs_from_cpu(state);
+        board.after_instruction();
+    }
     Ok(())
 }
 
@@ -64,10 +84,23 @@ pub fn run_with_front_panel(
     Ok(state.instr_count - start)
 }
 
-fn exec_instruction(
+pub fn run_with_joystick(
     state: &mut CpuState,
     mem: &mut Memory,
-    mut board: Option<&mut FrontPanel>,
+    board: &mut JoystickRcBoard,
+    max_steps: u64,
+) -> Result<u64, ExecError> {
+    let start = state.instr_count;
+    while !state.halted && state.instr_count - start < max_steps {
+        step_with_joystick(state, mem, Some(board))?;
+    }
+    Ok(state.instr_count - start)
+}
+
+fn exec_instruction<B: BoardIo>(
+    state: &mut CpuState,
+    mem: &mut Memory,
+    mut board: Option<&mut B>,
     insn: Instruction,
 ) {
     match insn {
@@ -112,15 +145,9 @@ fn exec_instruction(
         }
         Instruction::ResetQ => {
             state.q = false;
-            if let Some(board) = board.as_deref_mut() {
-                board.sync_outputs_from_cpu(state);
-            }
         }
         Instruction::SetQ => {
             state.q = true;
-            if let Some(board) = board.as_deref_mut() {
-                board.sync_outputs_from_cpu(state);
-            }
         }
         Instruction::PutLow { reg } => {
             let idx = reg.index_u8();

@@ -1,6 +1,6 @@
 number = 4
 slug = "joystick-rc-repl-demo"
-status = "pending"
+status = "in-progress"
 description = 'Step 4 of saga `io-board-demo`: joystick RC timing REPL demo.\n\nGoal: implem...'
 role = "production"
 context_files = []

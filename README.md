@@ -41,6 +41,24 @@ registers, front-panel state, RAM bytes at `0x2000..0x2002`, and a
 input strobe, `OUT 1` as a two-digit hex display write, `INP 1` as an
 input latch read, and the RAM-backed video view.
 
+Run the joystick resistor-capacitor timing REPL:
+
+```bash
+cargo run --example joystick_rc_demo
+```
+
+For a deterministic smoke run:
+
+```bash
+cargo run --example joystick_rc_demo -- --once 128 64
+```
+
+The joystick demo emulates two analog potentiometer axes in Rust. The
+CDP1802 program pulses `OUT 2` for X and `OUT 3` for Y, polls `EF4` to
+measure the simulated RC delay, writes a ball pixel into video RAM, and
+the terminal renderer shows the 64 x 32 grid with spaces and a solid
+block.
+
 ## Sibling layout
 
 Cross-crate deps assume sibling clones at
