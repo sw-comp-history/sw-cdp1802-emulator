@@ -7,24 +7,7 @@ use sw_cdp1802_emulator::{
 
 pub const MAX_STEPS: u64 = 100;
 
-pub const DEMO_SOURCE: &str = r#"
-        ORG 0x0000
-        SEQ
-        LDI 0x20
-        PHI R1
-        LDI 0x00
-        PLO R1
-        LDI 0xaa
-        STR R1
-        OUT 1
-        LDI 0x55
-        STR R1
-        OUT 1
-        B4 INPUT
-        REQ
-INPUT:  INP 1
-        IDL
-"#;
+pub const DEMO_SOURCE: &str = include_str!("asm/io_board_demo.s");
 
 fn main() {
     println!("=== CDP1802 ELF-style I/O board demo ===");

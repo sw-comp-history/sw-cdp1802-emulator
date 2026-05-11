@@ -5,23 +5,7 @@ use sw_cdp1802_emulator::{CpuState, Memory, run};
 
 const MAX_STEPS: u64 = 100;
 
-const DEMO_SOURCE: &str = r#"
-        ORG 0x0000
-        LDI 0x20
-        PHI R1
-        LDI 0x00
-        PLO R1
-        LDI 0x42
-        STR R1
-        INC R1
-        LDI 0x43
-        STR R1
-        INC R1
-        LDI 0x44
-        STR R1
-        BR DONE
-DONE:   IDL
-"#;
+const DEMO_SOURCE: &str = include_str!("asm/cdp1802_demo.s");
 
 fn main() {
     println!("=== CDP1802 demo ===");

@@ -1,0 +1,9 @@
+number = 5
+slug = "commented-assembler-demos"
+status = "in-progress"
+description = 'Follow-up step for saga `io-board-demo`: commented assembler-backed demos.\n\...'
+role = "production"
+context_files = []
+created_at = "2026-05-10T17:13:51"
+task_type = "emulator-io"
+commits = []

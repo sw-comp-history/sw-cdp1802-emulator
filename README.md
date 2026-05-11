@@ -59,6 +59,9 @@ measure the simulated RC delay, writes a ball pixel into video RAM, and
 the terminal renderer shows the 64 x 32 grid with spaces and a solid
 block.
 
+Demo assembly source lives under `examples/asm/*.s` and is included by
+the Rust examples at compile time with `include_str!`.
+
 ## Sibling layout
 
 Cross-crate deps assume sibling clones at

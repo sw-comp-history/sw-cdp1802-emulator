@@ -6,23 +6,7 @@ use sw_cdp1802_emulator::{CpuState, Memory, run};
 
 const MAX_STEPS: u64 = 100;
 
-const DEMO_SOURCE: &str = r#"
-        ORG 0x0000
-        LDI 0x20
-        PHI R1
-        LDI 0x00
-        PLO R1
-        LDI 0x42
-        STR R1
-        INC R1
-        LDI 0x43
-        STR R1
-        INC R1
-        LDI 0x44
-        STR R1
-        BR DONE
-DONE:   IDL
-"#;
+const DEMO_SOURCE: &str = include_str!("../examples/asm/cdp1802_demo.s");
 
 const DEMO_BYTES: &[u8] = &[
     0xF8, 0x20, 0xB1, 0xF8, 0x00, 0xA1, 0xF8, 0x42, 0x51, 0x11, 0xF8, 0x43, 0x51, 0x11, 0xF8, 0x44,
