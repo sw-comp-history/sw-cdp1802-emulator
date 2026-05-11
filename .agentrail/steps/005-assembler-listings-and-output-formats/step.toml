@@ -1,0 +1,11 @@
+number = 5
+slug = "assembler-listings-and-output-formats"
+status = "pending"
+description = """
+Step 5 of saga full-cdp1802-coverage: assembler listings and output formats.
+..."""
+role = "production"
+context_files = []
+created_at = "2026-05-11T11:04:16"
+task_type = "assembler-output-formats"
+commits = []

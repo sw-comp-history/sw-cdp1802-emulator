@@ -1,0 +1,12 @@
+number = 2
+slug = "complete-emulator-instruction-subset"
+status = "pending"
+description = """
+Step 3 of saga full-cdp1802-coverage: complete emulator instruction subset.
+
+..."""
+role = "production"
+context_files = []
+created_at = "2026-05-11T11:02:55"
+task_type = "emulator-instruction-coverage"
+commits = []

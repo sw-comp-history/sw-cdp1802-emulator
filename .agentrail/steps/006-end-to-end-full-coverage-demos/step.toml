@@ -1,0 +1,12 @@
+number = 6
+slug = "end-to-end-full-coverage-demos"
+status = "pending"
+description = """
+Step 6 of saga full-cdp1802-coverage: end-to-end full coverage demos.
+
+Goal: ..."""
+role = "production"
+context_files = []
+created_at = "2026-05-11T11:04:24"
+task_type = "emulator-demo"
+commits = []
