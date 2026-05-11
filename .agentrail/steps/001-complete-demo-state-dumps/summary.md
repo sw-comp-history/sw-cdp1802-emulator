@@ -1,0 +1,1 @@
+Added a shared CPU-state dump helper and updated all runnable demos to print D, modeled flag state, halt/instruction metadata, and R0 through RF after execution. Added regression coverage for the dump contents.
