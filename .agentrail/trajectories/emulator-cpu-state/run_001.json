@@ -1,0 +1,11 @@
+{
+  "task_type": "emulator-cpu-state",
+  "state": {
+    "number": 2,
+    "step": "model-missing-cpu-state"
+  },
+  "action": "Read current state, dump, and docs; added fields and helper methods in src/state.rs; updated format_cpu_state; added cpu state tests; refreshed io-board and postmortem docs; ran cargo fmt --check, cargo test, and all runnable examples.",
+  "result": "success",
+  "reward": 1,
+  "timestamp": "2026-05-11T11:19:20"
+}

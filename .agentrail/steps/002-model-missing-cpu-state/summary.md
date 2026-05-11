@@ -1,0 +1,1 @@
+Extended CpuState with DF, T, interrupt-enable, and interrupt-pending state plus helper methods. Updated dumps, tests, and docs to distinguish modeled CPU state from behavior still planned for later instruction/DMA work.

@@ -1,6 +1,6 @@
 number = 2
 slug = "model-missing-cpu-state"
-status = "in-progress"
+status = "completed"
 description = """
 Step 2 of saga full-cdp1802-coverage: model missing CPU state.
 
@@ -8,5 +8,6 @@ Goal: extend ..."""
 role = "production"
 context_files = []
 created_at = "2026-05-11T11:03:53"
+completed_at = "2026-05-11T11:19:20"
 task_type = "emulator-cpu-state"
-commits = []
+commits = ["4d4503e7b321bc3b18c5b48b3da34db224c092be"]
