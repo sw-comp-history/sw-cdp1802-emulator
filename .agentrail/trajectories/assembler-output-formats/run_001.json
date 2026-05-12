@@ -1,0 +1,11 @@
+{
+  "task_type": "assembler-output-formats",
+  "state": {
+    "number": 5,
+    "step": "assembler-listings-and-output-formats"
+  },
+  "action": "Implemented sw-cdp1802-asm src/output.rs APIs, exported helpers, added SymbolTable iteration, added output-format tests, updated README and docs/assemblers.md, ran cargo fmt --check and cargo test in assembler and emulator, ran all emulator demos, committed and pushed assembler changes.",
+  "result": "success",
+  "reward": 1,
+  "timestamp": "2026-05-12T15:04:25"
+}

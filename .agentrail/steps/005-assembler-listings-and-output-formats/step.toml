@@ -1,11 +1,12 @@
 number = 5
 slug = "assembler-listings-and-output-formats"
-status = "in-progress"
+status = "completed"
 description = """
 Step 5 of saga full-cdp1802-coverage: assembler listings and output formats.
 ..."""
 role = "production"
 context_files = []
 created_at = "2026-05-11T11:04:16"
+completed_at = "2026-05-12T15:04:25"
 task_type = "assembler-output-formats"
-commits = []
+commits = ["ea8b311182f6d1949cc8c1305de58b38f95fcf04"]

@@ -1,0 +1,1 @@
+Added assembler output helpers in sw-cdp1802-asm for raw binary bytes, Intel HEX records, and human-readable listings with line/address/byte/source/symbol information plus inline error listing support. Documented how emulator demos still use assemble(source), while raw bytes and Intel HEX support emulator loading and retro hardware workflows.
