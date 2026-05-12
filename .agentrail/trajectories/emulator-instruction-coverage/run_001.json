@@ -1,0 +1,11 @@
+{
+  "task_type": "emulator-instruction-coverage",
+  "state": {
+    "number": 3,
+    "step": "complete-emulator-instruction-subset"
+  },
+  "action": "Inspected sw-cdp1802-isa instruction/decode coverage, added docs/instruction-coverage.md, added all-register tests for INC, STR, PHI, and PLO, ran cargo fmt --check, cargo test, and the three runnable demos.",
+  "result": "success",
+  "reward": 1,
+  "timestamp": "2026-05-12T14:23:50"
+}

@@ -1,6 +1,6 @@
 number = 3
 slug = "complete-emulator-instruction-subset"
-status = "in-progress"
+status = "completed"
 description = """
 Step 3 of saga full-cdp1802-coverage: complete emulator instruction subset.
 
@@ -8,5 +8,6 @@ Step 3 of saga full-cdp1802-coverage: complete emulator instruction subset.
 role = "production"
 context_files = []
 created_at = "2026-05-11T11:04:00"
+completed_at = "2026-05-12T14:23:50"
 task_type = "emulator-instruction-coverage"
-commits = []
+commits = ["eae206d1a96805af0627f7b483c5ac9ae90aef6d"]

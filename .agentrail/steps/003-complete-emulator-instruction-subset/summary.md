@@ -1,0 +1,1 @@
+Confirmed the emulator already executes every instruction currently exposed by sw-cdp1802-isa, added all-16-register regression coverage for implemented register-family behavior, and documented the sibling ISA blocker plus the required opcode-family work before broad emulator coverage can continue.
