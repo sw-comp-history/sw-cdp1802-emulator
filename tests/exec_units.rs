@@ -11,6 +11,13 @@ fn write_insn(mem: &mut Memory, addr: u16, insn: Instruction) -> u16 {
     addr.wrapping_add(n as u16)
 }
 
+fn state_with_pc_away_from(reg: u8) -> CpuState {
+    let mut state = CpuState::new();
+    state.p = (reg.wrapping_add(1)) & 0x0F;
+    state.write_reg(state.p, 0);
+    state
+}
+
 #[test]
 fn initial_state_matches_demo_entry_contract() {
     let state = CpuState::new();
@@ -59,6 +66,35 @@ fn phi_and_plo_write_register_halves_from_d() {
 }
 
 #[test]
+fn phi_and_plo_cover_all_scratchpad_registers() {
+    for reg in 0..16 {
+        let mut mem = Memory::default();
+        let mut addr = 0;
+        addr = write_insn(&mut mem, addr, Instruction::LoadImmediate { value: 0x12 });
+        addr = write_insn(
+            &mut mem,
+            addr,
+            Instruction::PutHigh {
+                reg: Reg::new_masked(reg),
+            },
+        );
+        addr = write_insn(&mut mem, addr, Instruction::LoadImmediate { value: 0x34 });
+        write_insn(
+            &mut mem,
+            addr,
+            Instruction::PutLow {
+                reg: Reg::new_masked(reg),
+            },
+        );
+        let mut state = state_with_pc_away_from(reg);
+
+        run(&mut state, &mut mem, 4).unwrap();
+
+        assert_eq!(state.read_reg(reg), 0x1234, "R{reg:x}");
+    }
+}
+
+#[test]
 fn str_stores_d_at_register_address() {
     let mut mem = Memory::default();
     write_insn(
@@ -76,6 +112,28 @@ fn str_stores_d_at_register_address() {
 }
 
 #[test]
+fn str_covers_all_scratchpad_registers() {
+    for reg in 0..16 {
+        let mut mem = Memory::default();
+        write_insn(
+            &mut mem,
+            0,
+            Instruction::Store {
+                reg: Reg::new_masked(reg),
+            },
+        );
+        let mut state = state_with_pc_away_from(reg);
+        let target = 0x2000 + reg as u16;
+        state.d = 0x80 | reg;
+        state.write_reg(reg, target);
+
+        step(&mut state, &mut mem).unwrap();
+
+        assert_eq!(mem.read_byte(target), 0x80 | reg, "R{reg:x}");
+    }
+}
+
+#[test]
 fn inc_increments_selected_register() {
     let mut mem = Memory::default();
     write_insn(
@@ -89,6 +147,26 @@ fn inc_increments_selected_register() {
     state.write_reg(1, 0xFFFF);
     step(&mut state, &mut mem).unwrap();
     assert_eq!(state.read_reg(1), 0);
+}
+
+#[test]
+fn inc_covers_all_scratchpad_registers() {
+    for reg in 0..16 {
+        let mut mem = Memory::default();
+        write_insn(
+            &mut mem,
+            0,
+            Instruction::Increment {
+                reg: Reg::new_masked(reg),
+            },
+        );
+        let mut state = state_with_pc_away_from(reg);
+        state.write_reg(reg, 0x12FF);
+
+        step(&mut state, &mut mem).unwrap();
+
+        assert_eq!(state.read_reg(reg), 0x1300, "R{reg:x}");
+    }
 }
 
 #[test]

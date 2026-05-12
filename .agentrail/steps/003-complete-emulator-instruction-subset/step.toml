@@ -1,6 +1,6 @@
 number = 3
 slug = "complete-emulator-instruction-subset"
-status = "pending"
+status = "in-progress"
 description = """
 Step 3 of saga full-cdp1802-coverage: complete emulator instruction subset.
 
