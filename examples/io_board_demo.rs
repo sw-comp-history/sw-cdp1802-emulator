@@ -1,6 +1,6 @@
 //! Runnable CDP1802 ELF-style I/O board demo.
 
-use sw_cdp1802_asm::assemble;
+use sw_cdp1802_asm::{assemble, assemble_intel_hex, assemble_listing};
 use sw_cdp1802_emulator::{
     CpuState, FrontPanel, Memory, VIDEO_BASE, VideoView, format_cpu_state, run_with_front_panel,
 };
@@ -13,6 +13,18 @@ fn main() {
     println!("=== CDP1802 ELF-style I/O board demo ===");
     println!("--- source ---");
     println!("{DEMO_SOURCE}");
+
+    println!("--- listing ---");
+    print!(
+        "{}",
+        assemble_listing(DEMO_SOURCE).expect("assemble listing")
+    );
+    println!("--- intel hex ---");
+    print!(
+        "{}",
+        assemble_intel_hex(DEMO_SOURCE).expect("assemble Intel HEX")
+    );
+    println!();
 
     let asm = assemble(DEMO_SOURCE).expect("assemble I/O board demo");
     println!("--- assembled ({} bytes) ---", asm.bytes.len());

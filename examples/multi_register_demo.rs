@@ -1,14 +1,14 @@
-//! Runnable CDP1802 assembler/emulator demo.
+//! Runnable CDP1802 multi-register assembler/emulator demo.
 
 use sw_cdp1802_asm::{assemble, assemble_intel_hex, assemble_listing};
 use sw_cdp1802_emulator::{CpuState, Memory, format_cpu_state, run};
 
 const MAX_STEPS: u64 = 100;
 
-const DEMO_SOURCE: &str = include_str!("asm/cdp1802_demo.s");
+const DEMO_SOURCE: &str = include_str!("asm/multi_register_demo.s");
 
 fn main() {
-    println!("=== CDP1802 demo ===");
+    println!("=== CDP1802 multi-register demo ===");
     println!("--- source ---");
     println!("{DEMO_SOURCE}");
 
@@ -24,7 +24,7 @@ fn main() {
     );
     println!();
 
-    let asm = assemble(DEMO_SOURCE).expect("assemble demo");
+    let asm = assemble(DEMO_SOURCE).expect("assemble multi-register demo");
     println!("--- assembled ({} bytes) ---", asm.bytes.len());
     print_hex_dump(&asm.bytes);
     println!();
@@ -32,7 +32,7 @@ fn main() {
     let mut mem = Memory::default();
     mem.load_bytes(0, &asm.bytes);
     let mut state = CpuState::new();
-    let steps = run(&mut state, &mut mem, MAX_STEPS).expect("run demo");
+    let steps = run(&mut state, &mut mem, MAX_STEPS).expect("run multi-register demo");
 
     println!(
         "--- ran {steps} instructions; halted = {} ---",
@@ -42,33 +42,18 @@ fn main() {
     print!("{}", format_cpu_state(&state));
     println!();
 
-    println!("--- ram 0x2000..0x2002 ---");
-    let data = mem.read_range(0x2000, 3);
-    print_hex_dump_at(0x2000, &data);
+    println!("--- selected RAM writes ---");
+    for addr in [0x2010, 0x2020, 0x2030, 0x2040] {
+        println!("0x{addr:04x} = 0x{:02x}", mem.read_byte(addr));
+    }
 }
 
 fn print_hex_dump(bytes: &[u8]) {
-    print_hex_dump_at(0, bytes);
-}
-
-fn print_hex_dump_at(base: u16, bytes: &[u8]) {
     for (i, chunk) in bytes.chunks(16).enumerate() {
-        print!("  {:04x}: ", base as usize + i * 16);
+        print!("  {:04x}: ", i * 16);
         for b in chunk {
             print!("{b:02x} ");
         }
-        for _ in chunk.len()..16 {
-            print!("   ");
-        }
-        print!(" |");
-        for b in chunk {
-            let c = if b.is_ascii_graphic() || *b == b' ' {
-                *b as char
-            } else {
-                '.'
-            };
-            print!("{c}");
-        }
-        println!("|");
+        println!();
     }
 }

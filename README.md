@@ -18,15 +18,26 @@ satellite subsystems.
 
 ## Status
 
-`0.1.0` demo subset. The emulator can execute the first assembler/
-emulator contract program for `IDL`, `INC`, `BR`, `STR`, `PLO`, `PHI`,
-and `LDI`.
+`0.1.0` demo subset. The emulator can execute the current sibling ISA
+subset: `IDL`, `INC`, `BR`, `B1`..`B4`, `BN1`..`BN4`, `STR`, `OUT`,
+`INP`, `REQ`, `SEQ`, `PLO`, `PHI`, and `LDI`.
 
 Run the demo:
 
 ```bash
 cargo run --example cdp1802_demo
 ```
+
+Run the multi-register demo:
+
+```bash
+cargo run --example multi_register_demo
+```
+
+The base and multi-register demos print source, assembler listing, Intel
+HEX, assembled bytes, execution result, full CPU state, and memory changes.
+The multi-register demo intentionally exercises `R2`, `R3`, `RA`, and `RF`
+with the currently supported instruction families.
 
 Run the ELF-style I/O board demo:
 
@@ -35,11 +46,11 @@ cargo run --example io_board_demo
 ```
 
 The I/O board demo assembles a small CDP1802 program, runs it with the
-`FrontPanel` model, and prints the source, machine bytes, final
-registers, front-panel state, RAM bytes at `0x2000..0x2002`, and a
-64 x 32 text video frame. It exercises Q as a visible LED, EF4 as the
-input strobe, `OUT 1` as a two-digit hex display write, `INP 1` as an
-input latch read, and the RAM-backed video view.
+`FrontPanel` model, and prints the source, assembler listing, Intel HEX,
+machine bytes, final CPU state, front-panel state, RAM bytes at
+`0x2000..0x2002`, and a 64 x 32 text video frame. It exercises Q as a
+visible LED, EF4 as the input strobe, `OUT 1` as a two-digit hex display
+write, `INP 1` as an input latch read, and the RAM-backed video view.
 
 Run the joystick resistor-capacitor timing REPL:
 
@@ -60,7 +71,8 @@ the terminal renderer shows the 64 x 32 grid with spaces and a solid
 block.
 
 Demo assembly source lives under `examples/asm/*.s` and is included by
-the Rust examples at compile time with `include_str!`.
+the Rust examples at compile time with `include_str!`. See
+`docs/end-to-end-demos.md` for the demo matrix and coverage note.
 
 ## Sibling layout
 
