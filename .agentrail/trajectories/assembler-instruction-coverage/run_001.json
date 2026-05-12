@@ -1,0 +1,11 @@
+{
+  "task_type": "assembler-instruction-coverage",
+  "state": {
+    "number": 4,
+    "step": "complete-assembler-mnemonic-subset"
+  },
+  "action": "Inspected sw-cdp1802-asm and sw-cdp1802-isa coverage; updated ISA register parser/tests; updated assembler parser/tests/README/docs; ran cargo fmt --check and cargo test in ISA, assembler, and emulator; ran emulator demos; committed and pushed sibling repo changes.",
+  "result": "success",
+  "reward": 1,
+  "timestamp": "2026-05-12T14:41:00"
+}
