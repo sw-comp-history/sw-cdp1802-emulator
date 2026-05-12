@@ -1,0 +1,1 @@
+Refreshed runnable demos to show assembler listings and Intel HEX output, added a multi-register end-to-end demo using R2, R3, RA, and RF, added regression coverage for the multi-register demo, and documented the demo matrix plus the remaining full-coverage blocker.

@@ -1,6 +1,6 @@
 number = 6
 slug = "end-to-end-full-coverage-demos"
-status = "in-progress"
+status = "completed"
 description = """
 Step 6 of saga full-cdp1802-coverage: end-to-end full coverage demos.
 
@@ -8,5 +8,6 @@ Goal: ..."""
 role = "production"
 context_files = []
 created_at = "2026-05-11T11:04:24"
+completed_at = "2026-05-12T16:06:08"
 task_type = "emulator-demo"
-commits = []
+commits = ["72dd35f67ebfb8cc2d859bead9461dc6949fa560"]

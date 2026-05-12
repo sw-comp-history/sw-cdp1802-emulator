@@ -1,0 +1,11 @@
+{
+  "task_type": "emulator-demo",
+  "state": {
+    "number": 6,
+    "step": "end-to-end-full-coverage-demos"
+  },
+  "action": "Added examples/asm/multi_register_demo.s and examples/multi_register_demo.rs; updated base, I/O, and joystick examples to print listing/Intel HEX artifacts; added tests/multi_register_demo.rs; updated README and docs/end-to-end-demos.md; ran cargo fmt --check, cargo test, and all runnable demos.",
+  "result": "success",
+  "reward": 1,
+  "timestamp": "2026-05-12T16:06:08"
+}
