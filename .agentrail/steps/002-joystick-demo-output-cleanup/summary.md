@@ -1,0 +1,1 @@
+Moved joystick demo assembler artifacts behind explicit --source, --listing, and --hex flags while preserving --once X Y, and documented the default output shape with final CPU state, video RAM, and rendered grid.

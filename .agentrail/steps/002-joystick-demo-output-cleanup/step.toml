@@ -1,6 +1,6 @@
 number = 2
 slug = "joystick-demo-output-cleanup"
-status = "in-progress"
+status = "completed"
 description = """
 Step 2 of saga demo-output-cleanup: joystick demo output cleanup.
 
@@ -8,5 +8,6 @@ Goal: impr..."""
 role = "production"
 context_files = []
 created_at = "2026-05-12T17:20:23"
+completed_at = "2026-05-12T17:28:43"
 task_type = "emulator-demo"
-commits = []
+commits = ["e0c2c07dd8ac341a87631bddb2c66c52a459e81f"]

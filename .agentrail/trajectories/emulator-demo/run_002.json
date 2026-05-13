@@ -1,0 +1,11 @@
+{
+  "task_type": "emulator-demo",
+  "state": {
+    "number": 2,
+    "step": "joystick-demo-output-cleanup"
+  },
+  "action": "Added DemoOptions/parse_args in joystick_rc_demo, made source/listing/Intel HEX opt-in, updated README and docs/end-to-end-demos, added argument behavior test, ran cargo fmt --check, cargo test, cargo run --example joystick_rc_demo -- --once 128 64, and cargo run --example joystick_rc_demo -- --listing --hex --once 128 64.",
+  "result": "success",
+  "reward": 1,
+  "timestamp": "2026-05-12T17:28:43"
+}
