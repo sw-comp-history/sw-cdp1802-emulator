@@ -1,6 +1,6 @@
 number = 1
 slug = "complete-post-demo-dumps"
-status = "in-progress"
+status = "completed"
 description = """
 Step 1 of saga demo-output-cleanup: complete post-demo dumps.
 
@@ -8,5 +8,6 @@ Goal: improve ..."""
 role = "production"
 context_files = []
 created_at = "2026-05-12T17:20:14"
+completed_at = "2026-05-12T17:25:37"
 task_type = "emulator-demo"
-commits = []
+commits = ["2ca10ccab06a824d31a603b91ea0614599dc3497"]

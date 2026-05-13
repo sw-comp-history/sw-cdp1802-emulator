@@ -1,0 +1,1 @@
+Added a shared hex dump formatter, updated all runnable demos to use it, and added relevant post-run memory/video RAM dumps alongside complete CPU state output.
