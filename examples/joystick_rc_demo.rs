@@ -15,6 +15,14 @@ const CLEAR_PIXEL: char = ' ';
 
 pub const DEMO_SOURCE: &str = include_str!("asm/joystick_rc_demo.s");
 
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct DemoOptions {
+    pub once: Option<(u8, u8)>,
+    pub show_source: bool,
+    pub show_listing: bool,
+    pub show_hex: bool,
+}
+
 pub struct JoystickFrame {
     pub steps: u64,
     pub state: CpuState,
@@ -54,16 +62,19 @@ pub fn render_solid_video(memory: &Memory) -> String {
 
 fn main() {
     let args: Vec<String> = env::args().collect();
-    if args.len() == 4 && args[1] == "--once" {
-        let x = parse_axis_arg(&args[2]);
-        let y = parse_axis_arg(&args[3]);
-        print_assembly_artifacts();
+    let options = parse_args(&args[1..]).unwrap_or_else(|message| {
+        eprintln!("{message}");
+        eprintln!("usage: joystick_rc_demo [--source] [--listing] [--hex] [--once X Y]");
+        std::process::exit(2);
+    });
+    if let Some((x, y)) = options.once {
+        print_assembly_artifacts(&options);
         run_and_print(x, y);
         return;
     }
 
     println!("=== CDP1802 joystick RC timing demo ===");
-    print_assembly_artifacts();
+    print_assembly_artifacts(&options);
     println!("Enter joystick X/Y values from 0..255, or blank X to quit.");
     loop {
         let Some(x) = prompt_axis("X") else {
@@ -76,25 +87,70 @@ fn main() {
     }
 }
 
-fn print_assembly_artifacts() {
-    println!("--- source ---");
-    println!("{DEMO_SOURCE}");
-    println!("--- listing ---");
-    print!(
-        "{}",
-        assemble_listing(DEMO_SOURCE).expect("assemble listing")
-    );
-    println!("--- intel hex ---");
-    print!(
-        "{}",
-        assemble_intel_hex(DEMO_SOURCE).expect("assemble Intel HEX")
-    );
-    println!();
+pub fn parse_args(args: &[String]) -> Result<DemoOptions, String> {
+    let mut options = DemoOptions {
+        once: None,
+        show_source: false,
+        show_listing: false,
+        show_hex: false,
+    };
+
+    let mut i = 0;
+    while i < args.len() {
+        match args[i].as_str() {
+            "--source" => options.show_source = true,
+            "--listing" => options.show_listing = true,
+            "--hex" => options.show_hex = true,
+            "--once" => {
+                if options.once.is_some() {
+                    return Err("--once may only be provided once".to_string());
+                }
+                let x = args
+                    .get(i + 1)
+                    .ok_or_else(|| "--once requires X and Y axis values".to_string())
+                    .and_then(|s| parse_axis_arg(s))?;
+                let y = args
+                    .get(i + 2)
+                    .ok_or_else(|| "--once requires X and Y axis values".to_string())
+                    .and_then(|s| parse_axis_arg(s))?;
+                options.once = Some((x, y));
+                i += 2;
+            }
+            other => return Err(format!("unknown argument `{other}`")),
+        }
+        i += 1;
+    }
+
+    Ok(options)
 }
 
-fn parse_axis_arg(s: &str) -> u8 {
+fn print_assembly_artifacts(options: &DemoOptions) {
+    if options.show_source {
+        println!("--- source ---");
+        println!("{DEMO_SOURCE}");
+    }
+    if options.show_listing {
+        println!("--- listing ---");
+        print!(
+            "{}",
+            assemble_listing(DEMO_SOURCE).expect("assemble listing")
+        );
+    }
+    if options.show_hex {
+        println!("--- intel hex ---");
+        print!(
+            "{}",
+            assemble_intel_hex(DEMO_SOURCE).expect("assemble Intel HEX")
+        );
+    }
+    if options.show_source || options.show_listing || options.show_hex {
+        println!();
+    }
+}
+
+fn parse_axis_arg(s: &str) -> Result<u8, String> {
     s.parse::<u8>()
-        .unwrap_or_else(|_| panic!("axis value must be 0..255, got `{s}`"))
+        .map_err(|_| format!("axis value must be 0..255, got `{s}`"))
 }
 
 fn prompt_axis(name: &str) -> Option<u8> {

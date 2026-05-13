@@ -1,6 +1,6 @@
 number = 2
 slug = "joystick-demo-output-cleanup"
-status = "pending"
+status = "in-progress"
 description = """
 Step 2 of saga demo-output-cleanup: joystick demo output cleanup.
 

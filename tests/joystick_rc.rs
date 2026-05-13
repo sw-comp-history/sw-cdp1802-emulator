@@ -61,6 +61,31 @@ fn joystick_demo_frame_places_ball_from_measured_x_y() {
 }
 
 #[test]
+fn joystick_demo_args_hide_assembler_artifacts_by_default() {
+    let options = joystick_rc_demo::parse_args(&["--once".into(), "128".into(), "64".into()])
+        .expect("parse --once");
+
+    assert_eq!(options.once, Some((128, 64)));
+    assert!(!options.show_source);
+    assert!(!options.show_listing);
+    assert!(!options.show_hex);
+
+    let options = joystick_rc_demo::parse_args(&[
+        "--source".into(),
+        "--listing".into(),
+        "--hex".into(),
+        "--once".into(),
+        "128".into(),
+        "64".into(),
+    ])
+    .expect("parse artifact flags");
+
+    assert!(options.show_source);
+    assert!(options.show_listing);
+    assert!(options.show_hex);
+}
+
+#[test]
 fn joystick_step_uses_ef4_to_observe_ready_signal() {
     let source = "OUT 2\nB4 READY\nIDL\nREADY: IDL\n";
     let asm = assemble(source).expect("assemble tiny joystick poll");

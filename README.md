@@ -64,11 +64,20 @@ For a deterministic smoke run:
 cargo run --example joystick_rc_demo -- --once 128 64
 ```
 
+Assembler artifacts are hidden by default for demo readability. Add
+`--source`, `--listing`, or `--hex` to show the source file, assembler
+listing, or Intel HEX output:
+
+```bash
+cargo run --example joystick_rc_demo -- --listing --hex --once 128 64
+```
+
 The joystick demo emulates two analog potentiometer axes in Rust. The
 CDP1802 program pulses `OUT 2` for X and `OUT 3` for Y, polls `EF4` to
 measure the simulated RC delay, writes a ball pixel into video RAM, and
-the terminal renderer shows the 64 x 32 grid with spaces and a solid
-block.
+the terminal output shows joystick timing buckets, the final CPU state,
+raw video RAM at `0x2000..0x20ff`, and a 64 x 32 grid rendered with
+spaces and a solid block.
 
 Demo assembly source lives under `examples/asm/*.s` and is included by
 the Rust examples at compile time with `include_str!`. See
