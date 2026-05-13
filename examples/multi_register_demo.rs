@@ -1,7 +1,7 @@
 //! Runnable CDP1802 multi-register assembler/emulator demo.
 
 use sw_cdp1802_asm::{assemble, assemble_intel_hex, assemble_listing};
-use sw_cdp1802_emulator::{CpuState, Memory, format_cpu_state, run};
+use sw_cdp1802_emulator::{CpuState, Memory, format_cpu_state, format_hex_dump, run};
 
 const MAX_STEPS: u64 = 100;
 
@@ -26,7 +26,7 @@ fn main() {
 
     let asm = assemble(DEMO_SOURCE).expect("assemble multi-register demo");
     println!("--- assembled ({} bytes) ---", asm.bytes.len());
-    print_hex_dump(&asm.bytes);
+    print!("{}", format_hex_dump(0, &asm.bytes));
     println!();
 
     let mut mem = Memory::default();
@@ -46,14 +46,8 @@ fn main() {
     for addr in [0x2010, 0x2020, 0x2030, 0x2040] {
         println!("0x{addr:04x} = 0x{:02x}", mem.read_byte(addr));
     }
-}
+    println!();
 
-fn print_hex_dump(bytes: &[u8]) {
-    for (i, chunk) in bytes.chunks(16).enumerate() {
-        print!("  {:04x}: ", i * 16);
-        for b in chunk {
-            print!("{b:02x} ");
-        }
-        println!();
-    }
+    println!("--- ram 0x2010..0x2040 touched bytes ---");
+    print!("{}", format_hex_dump(0x2010, &mem.read_range(0x2010, 0x31)));
 }

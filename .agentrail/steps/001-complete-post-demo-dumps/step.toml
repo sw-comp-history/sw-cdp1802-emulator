@@ -1,6 +1,6 @@
 number = 1
 slug = "complete-post-demo-dumps"
-status = "pending"
+status = "in-progress"
 description = """
 Step 1 of saga demo-output-cleanup: complete post-demo dumps.
 

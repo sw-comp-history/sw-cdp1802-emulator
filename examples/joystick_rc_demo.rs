@@ -5,8 +5,8 @@ use std::io::{self, Write};
 
 use sw_cdp1802_asm::{assemble, assemble_intel_hex, assemble_listing};
 use sw_cdp1802_emulator::{
-    CpuState, JoystickRcBoard, Memory, VIDEO_BASE, VIDEO_HEIGHT, VIDEO_WIDTH, VideoView,
-    format_cpu_state, run_with_joystick,
+    CpuState, JoystickRcBoard, Memory, VIDEO_BASE, VIDEO_HEIGHT, VIDEO_SIZE_BYTES, VIDEO_WIDTH,
+    VideoView, format_cpu_state, format_hex_dump, run_with_joystick,
 };
 
 pub const MAX_STEPS: u64 = 500;
@@ -138,6 +138,17 @@ fn run_and_print(x: u8, y: u8) {
     println!(
         "ball bucket = ({x_bucket}, {y_bucket}); R1 = 0x{:04x}",
         frame.state.read_reg(1)
+    );
+    println!(
+        "--- video RAM 0x{VIDEO_BASE:04x}..0x{:04x} ---",
+        VIDEO_BASE + VIDEO_SIZE_BYTES as u16 - 1
+    );
+    print!(
+        "{}",
+        format_hex_dump(
+            VIDEO_BASE,
+            &frame.memory.read_range(VIDEO_BASE, VIDEO_SIZE_BYTES)
+        )
     );
     println!("--- video {VIDEO_WIDTH}x{VIDEO_HEIGHT} @ 0x{VIDEO_BASE:04x} ---");
     println!("{}", render_solid_video(&frame.memory));

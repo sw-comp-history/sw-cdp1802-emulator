@@ -30,3 +30,29 @@ pub fn format_cpu_state(state: &CpuState) -> String {
 
     out
 }
+
+pub fn format_hex_dump(base: u16, bytes: &[u8]) -> String {
+    let mut out = String::new();
+
+    for (i, chunk) in bytes.chunks(16).enumerate() {
+        write!(&mut out, "  {:04x}: ", base as usize + i * 16).expect("write to String");
+        for b in chunk {
+            write!(&mut out, "{b:02x} ").expect("write to String");
+        }
+        for _ in chunk.len()..16 {
+            out.push_str("   ");
+        }
+        out.push_str(" |");
+        for b in chunk {
+            let c = if b.is_ascii_graphic() || *b == b' ' {
+                *b as char
+            } else {
+                '.'
+            };
+            out.push(c);
+        }
+        out.push_str("|\n");
+    }
+
+    out
+}

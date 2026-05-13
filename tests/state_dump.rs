@@ -1,4 +1,4 @@
-use sw_cdp1802_emulator::{CpuState, format_cpu_state};
+use sw_cdp1802_emulator::{CpuState, format_cpu_state, format_hex_dump};
 
 #[test]
 fn cpu_state_dump_includes_current_architectural_state() {
@@ -57,4 +57,14 @@ fn cpu_state_dump_includes_current_architectural_state() {
             "missing `{expected}` from dump:\n{dump}"
         );
     }
+}
+
+#[test]
+fn hex_dump_includes_address_bytes_and_ascii() {
+    let dump = format_hex_dump(0x2000, &[0x41, 0x00, 0x7e]);
+
+    assert_eq!(
+        dump,
+        "  2000: 41 00 7e                                         |A.~|\n"
+    );
 }
