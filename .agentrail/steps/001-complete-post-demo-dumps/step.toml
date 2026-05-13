@@ -1,0 +1,12 @@
+number = 1
+slug = "complete-post-demo-dumps"
+status = "pending"
+description = """
+Step 1 of saga demo-output-cleanup: complete post-demo dumps.
+
+Goal: improve ..."""
+role = "production"
+context_files = []
+created_at = "2026-05-12T17:20:14"
+task_type = "emulator-demo"
+commits = []

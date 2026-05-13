@@ -1,6 +1,6 @@
-name = "full-cdp1802-coverage"
-status = "completed"
-current_step = 6
-created_at = "2026-05-11T11:03:38"
+name = "demo-output-cleanup"
+status = "active"
+current_step = 1
+created_at = "2026-05-12T17:20:05"
 plan_file = ".agentrail/plan.md"
 retroactive = false
