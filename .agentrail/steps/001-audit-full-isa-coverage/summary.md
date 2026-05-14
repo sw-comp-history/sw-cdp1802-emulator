@@ -1,0 +1,1 @@
+Audited current CDP1802 ISA, assembler, emulator, and web-demo coverage against the full RCA CDP1802 opcode map; documented the demo-subset gaps and blocked the 4K cassette-loader demo on shared full-ISA support.

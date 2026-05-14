@@ -1,0 +1,8 @@
+number = 2
+slug = "expand-isa-full-opcode-map"
+status = "pending"
+description = "Expand sw-cdp1802-isa from the current demo subset to the full RCA CDP1802 op..."
+role = "legacy"
+context_files = []
+created_at = "2026-05-14T16:21:34"
+commits = []
