@@ -76,7 +76,7 @@ The joystick demo emulates two analog potentiometer axes in Rust. The
 CDP1802 program pulses `OUT 2` for X and `OUT 3` for Y, polls `EF4` to
 measure the simulated RC delay, writes a ball pixel into video RAM, and
 the terminal output shows joystick timing buckets, the final CPU state,
-raw video RAM at `0x2000..0x20ff`, and a 64 x 32 grid rendered with
+raw video RAM at `0x0000..0x00ff`, and a 64 x 32 grid rendered with
 spaces and a solid block.
 
 Demo assembly source lives under `examples/asm/*.s` and is included by

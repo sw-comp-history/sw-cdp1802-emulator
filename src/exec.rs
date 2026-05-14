@@ -149,6 +149,9 @@ fn exec_instruction<B: BoardIo>(
         Instruction::SetQ => {
             state.q = true;
         }
+        Instruction::GetLow { reg } => {
+            state.d = (state.read_reg(reg.index_u8()) & 0x00FF) as u8;
+        }
         Instruction::PutLow { reg } => {
             let idx = reg.index_u8();
             let value = (state.read_reg(idx) & 0xFF00) | state.d as u16;
@@ -161,6 +164,24 @@ fn exec_instruction<B: BoardIo>(
         }
         Instruction::LoadImmediate { value } => {
             state.d = value;
+        }
+        Instruction::SetX { reg } => {
+            state.x = reg.index_u8();
+        }
+        Instruction::Add => {
+            let value = mem.read_byte(state.read_reg(state.x));
+            let sum = state.d as u16 + value as u16;
+            state.d = sum as u8;
+            state.df = sum > 0xFF;
+        }
+        Instruction::AddImmediate { value } => {
+            let sum = state.d as u16 + value as u16;
+            state.d = sum as u8;
+            state.df = sum > 0xFF;
+        }
+        Instruction::ShiftLeft => {
+            state.df = state.d & 0x80 != 0;
+            state.d = state.d.wrapping_shl(1);
         }
     }
 }

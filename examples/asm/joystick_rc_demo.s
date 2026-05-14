@@ -1,165 +1,60 @@
-        ; One animation frame. The Rust REPL owns the outer loop:
-        ; prompt for X/Y, clear RAM, run this program, render the screen,
-        ; then prompt again.
+        ; Shared COSMAC ELF-II 256-byte joystick RC demo.
         ;
-        ; This program uses an unrolled polling ladder instead of a
-        ; backward branch loop. Each B4 samples EF4 once. The RC circuit
-        ; model advances one tick after each instruction, so the first
-        ; B4 that sees EF4=true selects the measured delay bucket.
+        ; The full 0x0000..0x00ff memory page is also the 64x32 video
+        ; display. Program bytes appear as pixels. If the ball lands on
+        ; code, STR R1 overwrites code and the next frame can misbehave.
         ;
-        ; Pulse Y first. OUT 3 starts the emulated Y-axis RC timing
-        ; circuit. The first ready poll selects one of four Y buckets.
+        ; OUT 1 asks the host board to clear display bytes above the
+        ; loaded program image. OUT 3 pulses Y, OUT 2 pulses X, and EF4
+        ; becomes true after the emulated RC delay. The 1802 counts the
+        ; polling delay and computes the video address itself.
         ORG 0x0000
+        OUT 1
+        LDI SCRATCH
+        PLO R2
+
+        ; Measure Y with consecutive EF4 polls. Each B4 is a real
+        ; input-pin sample; the label reached determines the row offset.
         OUT 3
-        B4 Y0          ; ready immediately: top row bucket
-        B4 Y1          ; ready after one extra poll
-        B4 Y2          ; ready after two extra polls
-        BR Y3          ; otherwise use the bottom row bucket
+        B4 Y0
+        B4 Y1
+        B4 Y2
+        BR Y3
 
-        ; For the selected Y bucket, pulse X with OUT 2 and repeat the
-        ; same unrolled polling ladder to select a column bucket.
-Y0:     OUT 2
-        B4 Y0X0        ; left column bucket
-        B4 Y0X1
-        B4 Y0X2
-        BR Y0X3        ; right column bucket
-Y1:     OUT 2
-        B4 Y1X0
-        B4 Y1X1
-        B4 Y1X2
-        BR Y1X3
-Y2:     OUT 2
-        B4 Y2X0
-        B4 Y2X1
-        B4 Y2X2
-        BR Y2X3
-Y3:     OUT 2
-        B4 Y3X0
-        B4 Y3X1
-        B4 Y3X2
-        BR Y3X3
+Y0:     LDI 0x00
+        BR Y_DONE
+Y1:     LDI 0x40
+        BR Y_DONE
+Y2:     LDI 0x80
+        BR Y_DONE
+Y3:     LDI 0xc0
+Y_DONE:
+        STR R2
 
-        ; Redraw phase. The Rust REPL clears video RAM before each frame.
-        ; The 1802 code redraws by writing one ball pixel into the 64x32
-        ; video buffer, then halts so Rust can render the buffer.
-        ;
-        ; Row offsets are 0x00, 0x40, 0x80, 0xc0; columns are 0, 16,
-        ; 32, and 48, encoded as byte offsets 0, 2, 4, and 6.
-        ; The byte value 0x80 sets the leftmost pixel in the selected
-        ; byte, so each bucket lights one visible ball pixel.
-Y0X0:   LDI 0x20
-        PHI R1
-        LDI 0x00
-        PLO R1
-        LDI 0x80
-        STR R1
-        BR DONE
-Y0X1:   LDI 0x20
-        PHI R1
-        LDI 0x02
-        PLO R1
-        LDI 0x80
-        STR R1
-        BR DONE
-Y0X2:   LDI 0x20
-        PHI R1
-        LDI 0x04
-        PLO R1
-        LDI 0x80
-        STR R1
-        BR DONE
-Y0X3:   LDI 0x20
-        PHI R1
-        LDI 0x06
-        PLO R1
-        LDI 0x80
-        STR R1
-        BR DONE
+        ; Measure X the same way. These constants are byte offsets
+        ; within an 8-byte video row: 0, 2, 4, or 6.
+        OUT 2
+        B4 X0
+        B4 X1
+        B4 X2
+        BR X3
 
-Y1X0:   LDI 0x20
-        PHI R1
-        LDI 0x40
-        PLO R1
-        LDI 0x80
-        STR R1
-        BR DONE
-Y1X1:   LDI 0x20
-        PHI R1
-        LDI 0x42
-        PLO R1
-        LDI 0x80
-        STR R1
-        BR DONE
-Y1X2:   LDI 0x20
-        PHI R1
-        LDI 0x44
-        PLO R1
-        LDI 0x80
-        STR R1
-        BR DONE
-Y1X3:   LDI 0x20
-        PHI R1
-        LDI 0x46
-        PLO R1
-        LDI 0x80
-        STR R1
-        BR DONE
+X0:     LDI 0x00
+        BR X_DONE
+X1:     LDI 0x02
+        BR X_DONE
+X2:     LDI 0x04
+        BR X_DONE
+X3:     LDI 0x06
 
-Y2X0:   LDI 0x20
-        PHI R1
-        LDI 0x80
+        ; Add X byte offset to the stored Y row offset and write the
+        ; ball pixel at the computed video address.
+X_DONE:
+        SEX R2
+        ADD
         PLO R1
         LDI 0x80
         STR R1
-        BR DONE
-Y2X1:   LDI 0x20
-        PHI R1
-        LDI 0x82
-        PLO R1
-        LDI 0x80
-        STR R1
-        BR DONE
-Y2X2:   LDI 0x20
-        PHI R1
-        LDI 0x84
-        PLO R1
-        LDI 0x80
-        STR R1
-        BR DONE
-Y2X3:   LDI 0x20
-        PHI R1
-        LDI 0x86
-        PLO R1
-        LDI 0x80
-        STR R1
-        BR DONE
+        IDL
 
-Y3X0:   LDI 0x20
-        PHI R1
-        LDI 0xc0
-        PLO R1
-        LDI 0x80
-        STR R1
-        BR DONE
-Y3X1:   LDI 0x20
-        PHI R1
-        LDI 0xc2
-        PLO R1
-        LDI 0x80
-        STR R1
-        BR DONE
-Y3X2:   LDI 0x20
-        PHI R1
-        LDI 0xc4
-        PLO R1
-        LDI 0x80
-        STR R1
-        BR DONE
-Y3X3:   LDI 0x20
-        PHI R1
-        LDI 0xc6
-        PLO R1
-        LDI 0x80
-        STR R1
-
-DONE:   IDL
+SCRATCH:

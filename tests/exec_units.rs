@@ -95,6 +95,24 @@ fn phi_and_plo_cover_all_scratchpad_registers() {
 }
 
 #[test]
+fn glo_loads_register_low_byte_into_d() {
+    let mut mem = Memory::default();
+    write_insn(
+        &mut mem,
+        0,
+        Instruction::GetLow {
+            reg: Reg::new_masked(1),
+        },
+    );
+    let mut state = CpuState::new();
+    state.write_reg(1, 0x12ab);
+
+    step(&mut state, &mut mem).unwrap();
+
+    assert_eq!(state.d, 0xab);
+}
+
+#[test]
 fn str_stores_d_at_register_address() {
     let mut mem = Memory::default();
     write_insn(
@@ -167,6 +185,57 @@ fn inc_covers_all_scratchpad_registers() {
 
         assert_eq!(state.read_reg(reg), 0x1300, "R{reg:x}");
     }
+}
+
+#[test]
+fn sex_selects_x_register() {
+    let mut mem = Memory::default();
+    write_insn(
+        &mut mem,
+        0,
+        Instruction::SetX {
+            reg: Reg::new_masked(2),
+        },
+    );
+    let mut state = CpuState::new();
+
+    step(&mut state, &mut mem).unwrap();
+
+    assert_eq!(state.x, 2);
+}
+
+#[test]
+fn add_adds_memory_at_rx_and_sets_df_on_carry() {
+    let mut mem = Memory::default();
+    write_insn(&mut mem, 0, Instruction::Add);
+    mem.write_byte(0x1234, 0x22);
+    let mut state = CpuState::new();
+    state.d = 0xf0;
+    state.x = 1;
+    state.write_reg(1, 0x1234);
+
+    step(&mut state, &mut mem).unwrap();
+
+    assert_eq!(state.d, 0x12);
+    assert!(state.df);
+}
+
+#[test]
+fn adi_adds_immediate_and_shl_shifts_d_through_df() {
+    let mut mem = Memory::default();
+    let mut addr = 0;
+    addr = write_insn(&mut mem, addr, Instruction::AddImmediate { value: 0x03 });
+    write_insn(&mut mem, addr, Instruction::ShiftLeft);
+    let mut state = CpuState::new();
+    state.d = 0x7f;
+
+    step(&mut state, &mut mem).unwrap();
+    assert_eq!(state.d, 0x82);
+    assert!(!state.df);
+
+    step(&mut state, &mut mem).unwrap();
+    assert_eq!(state.d, 0x04);
+    assert!(state.df);
 }
 
 #[test]

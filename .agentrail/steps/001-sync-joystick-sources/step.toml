@@ -1,0 +1,8 @@
+number = 1
+slug = "sync-joystick-sources"
+status = "in-progress"
+description = "Update both joystick assembly sources so the CLI version and web UI version r..."
+role = "production"
+context_files = []
+created_at = "2026-05-14T11:37:22"
+commits = []

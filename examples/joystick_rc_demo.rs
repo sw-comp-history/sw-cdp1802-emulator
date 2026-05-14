@@ -5,11 +5,12 @@ use std::io::{self, Write};
 
 use sw_cdp1802_asm::{assemble, assemble_intel_hex, assemble_listing};
 use sw_cdp1802_emulator::{
-    CpuState, JoystickRcBoard, Memory, VIDEO_BASE, VIDEO_HEIGHT, VIDEO_SIZE_BYTES, VIDEO_WIDTH,
-    VideoView, format_cpu_state, format_hex_dump, run_with_joystick,
+    CpuState, JoystickRcBoard, Memory, VIDEO_HEIGHT, VIDEO_SIZE_BYTES, VIDEO_WIDTH, VideoView,
+    format_cpu_state, format_hex_dump, run_with_joystick,
 };
 
 pub const MAX_STEPS: u64 = 500;
+pub const JOYSTICK_VIDEO_BASE: u16 = 0x0000;
 const SET_PIXEL: char = '█';
 const CLEAR_PIXEL: char = ' ';
 
@@ -49,7 +50,7 @@ pub fn run_frame(x: u8, y: u8) -> JoystickFrame {
 }
 
 pub fn render_solid_video(memory: &Memory) -> String {
-    VideoView::elf_64x32()
+    VideoView::new(JOYSTICK_VIDEO_BASE)
         .render_text(memory)
         .chars()
         .map(|c| match c {
@@ -196,16 +197,18 @@ fn run_and_print(x: u8, y: u8) {
         frame.state.read_reg(1)
     );
     println!(
-        "--- video RAM 0x{VIDEO_BASE:04x}..0x{:04x} ---",
-        VIDEO_BASE + VIDEO_SIZE_BYTES as u16 - 1
+        "--- video RAM 0x{JOYSTICK_VIDEO_BASE:04x}..0x{:04x} ---",
+        JOYSTICK_VIDEO_BASE + VIDEO_SIZE_BYTES as u16 - 1
     );
     print!(
         "{}",
         format_hex_dump(
-            VIDEO_BASE,
-            &frame.memory.read_range(VIDEO_BASE, VIDEO_SIZE_BYTES)
+            JOYSTICK_VIDEO_BASE,
+            &frame
+                .memory
+                .read_range(JOYSTICK_VIDEO_BASE, VIDEO_SIZE_BYTES)
         )
     );
-    println!("--- video {VIDEO_WIDTH}x{VIDEO_HEIGHT} @ 0x{VIDEO_BASE:04x} ---");
+    println!("--- video {VIDEO_WIDTH}x{VIDEO_HEIGHT} @ 0x{JOYSTICK_VIDEO_BASE:04x} ---");
     println!("{}", render_solid_video(&frame.memory));
 }
