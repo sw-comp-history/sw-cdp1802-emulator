@@ -1,1 +1,1 @@
-Ensure the CLI joystick demo and Yew/WASM web joystick demo execute the same valid CDP1802 assembly source. Step 1 updates both joystick .s files and supporting emulator/web execution semantics so host Rust only emulates IO devices and rendering, while the 1802 code measures RC timing and writes the ball pixel.
+Track follow-up work for the CDP1802 joystick live web demo. Step 1 keeps the shared joystick assembly comments aligned with the web UI update that makes the EF4 polling loop apparent while the browser steps through instructions.

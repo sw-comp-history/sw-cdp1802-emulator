@@ -1,0 +1,1 @@
+Keep the emulator joystick assembly comments synchronized with the web UI live-stepping update. The source should make the unrolled EF4 polling loops apparent without changing machine code behavior.
