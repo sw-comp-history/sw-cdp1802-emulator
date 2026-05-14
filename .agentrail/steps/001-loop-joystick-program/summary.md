@@ -1,0 +1,1 @@
+Changed the shared joystick assembly to loop continuously, selecting RF before OUT instructions so repeated loops do not move the scratch pointer. The CLI demo now runs one loop for output while the web demo can keep the CPU running and update only RC inputs from mouse movement.
