@@ -1,0 +1,1 @@
+Synchronized the CLI and web joystick demos on the same 58-byte CDP1802 assembly source. The program clears display memory above code, measures X/Y through EF4 polling ladders, computes the 256-byte video address in 1802 code, and writes the ball pixel with STR R1; host Rust now only emulates IO and renders memory.
