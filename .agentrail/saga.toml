@@ -1,6 +1,6 @@
-name = "continuous-joystick-loop"
-status = "completed"
+name = "full-cdp1802-isa"
+status = "active"
 current_step = 1
-created_at = "2026-05-14T12:02:41"
+created_at = "2026-05-14T16:18:26"
 plan_file = ".agentrail/plan.md"
 retroactive = false

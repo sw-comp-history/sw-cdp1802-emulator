@@ -1,0 +1,1 @@
+Track the fix that makes the joystick demo program run continuously. Step 1 changes the shared assembly to loop instead of halt, keeps OUT instructions stable by selecting RF at loop start, and adapts the CLI example/test to stop after one loop for demo output.

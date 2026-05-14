@@ -1,100 +1,207 @@
-# CDP1802 Instruction Coverage
+# CDP1802 Full ISA Coverage
 
-Status: blocker record for saga `full-cdp1802-coverage`, step
-`complete-emulator-instruction-subset`.
+Status: planning and blocker record for saga `full-cdp1802-isa`, step
+`audit-full-isa-coverage`.
 
-## Current Emulator Coverage
+## Position
 
-The emulator executes every instruction currently exposed by the sibling
-`sw-cdp1802-isa` crate:
+The CDP1802 emulator and assembler must support the full RCA CDP1802
+instruction set. Demos must not grow by adding one-off instruction shortcuts in
+`sw-cdp1802-io` or any other demo layer. The web demos can expose specific I/O
+boards and memory maps, but instruction decode, encode, assembly, disassembly,
+and execution semantics belong in the shared crates:
 
-- `IDL`
-- `INC Rn`
-- `BR addr`
-- `B1`, `B2`, `B3`, `B4`
-- `BN1`, `BN2`, `BN3`, `BN4`
-- `STR Rn`
-- `OUT 1` through `OUT 7`
-- `INP 1` through `INP 7`
-- `REQ`, `SEQ`
-- `PLO Rn`, `PHI Rn`
-- `LDI imm8`
+- `sw-cdp1802-isa`: architectural instruction definitions, decode, encode, and
+  disassembly text.
+- `sw-cdp1802-asm`: source parsing, symbols, directives, listing/output formats,
+  and assembly through `sw-cdp1802-isa`.
+- `sw-cdp1802-emulator`: CPU state, memory, instruction execution, DMA-visible
+  state, interrupt-visible state, and device hooks.
+- `sw-cdp1802-io`: browser demos only. This crate should use the shared
+  assembler and emulator; it should not maintain a separate instruction
+  executor.
 
-The current emulator tests now exercise the implemented register-family
-instructions across all sixteen scratchpad registers `R0..RF`, rather than
-only the demo-visible `R1`.
+The planned 4K cassette-loader demo is blocked until the shared crates can
+assemble and execute the required real 1802 program without demo-local opcode
+patches.
 
-## Blocking Issue
+## Baseline Sources
 
-The broader emulator work cannot proceed cleanly until `sw-cdp1802-isa`
-defines and decodes the missing CDP1802 instruction families. The emulator
-dispatch currently matches on `sw_cdp1802_isa::Instruction`; adding local
-parallel opcode definitions in the emulator would split the architectural
-model and make the later assembler work inconsistent.
+Coverage should be checked against the RCA CDP1802 instruction summary:
 
-Per the saga instruction, this step stops at the documented blocker instead
-of inventing emulator-only instruction definitions.
+- RCA CDP1802/CDP1802C data sheet, instruction summary table:
+  https://www.cosmacelf.com/publications/data-sheets/cdp1802-rca.pdf
+- RCA User Manual for the CDP1802 COSMAC Microprocessor, Appendix A:
+  https://bitsavers.trailing-edge.com/components/rca/cosmac/MPM-201A_User_Manual_for_the_CDP1802_COSMAC_Microprocessor_1976.pdf
+- Lowell O. Turner's opcode table is useful as a compact secondary checklist:
+  https://www.nyx.net/~lturner/public_html/CDP1802ins2.html
 
-## Required Sibling ISA Work
+## Current State
 
-`sw-cdp1802-isa` needs instruction enum variants, decode, encode, display,
-and exact-byte tests for these opcode families before the emulator can add
-the corresponding execution semantics:
+The current implementation is still a demo subset:
 
-- Register operations:
-  - `LDN Rn` for `R1..RF`
-  - `DEC Rn`
-  - `GLO Rn`
-  - `GHI Rn`
-  - `SEP Rn`
-  - `SEX Rn`
-- Memory-reference operations:
-  - `LDA Rn`
-  - `LDX`
-  - `LDXA`
-  - `STXD`
-  - `IRX`
-  - `SAV`
-  - `MARK`
-- ALU and data-flag operations:
-  - `OR`, `AND`, `XOR`
-  - `ADD`, `ADC`, `ADI`, `ADCI`
-  - `SD`, `SDB`, `SDI`, `SDBI`
-  - `SM`, `SMB`, `SMI`, `SMBI`
-  - `SHR`/`SHRC`
-  - `SHL`/`SHLC`
-  - `ORI`, `ANI`, `XRI`
-- Short branches and skips:
-  - `BQ`, `BNQ`
-  - `BZ`, `BNZ`
-  - `BDF`, `BNF`
-  - `NBR`
-- Long branch and long skip group:
-  - long unconditional branch and no-long-branch forms
-  - long `Q`, zero, data-flag, and interrupt-enable branches/skips
-  - long negated variants
-- Interrupt/control operations:
-  - `RET`
-  - `DIS`
-  - behavior-facing representation for `MARK`, `SAV`, `T`, and interrupt
-    enable changes.
+- `sw-cdp1802-isa/src/lib.rs` says "Demo-subset ISA implementation" and exposes
+  only 18 instruction variants.
+- `sw-cdp1802-isa/src/decode.rs` and `src/encode.rs` decode/encode only the
+  subset needed by the current demos.
+- `sw-cdp1802-asm/src/encode.rs` and `src/symtab.rs` recognize only that same
+  subset plus `ORG` and `DB`.
+- `sw-cdp1802-emulator/src/exec.rs` says "Instruction execution dispatch for
+  the demo subset" and executes only the instructions present in
+  `sw_cdp1802_isa::Instruction`.
+- `sw-cdp1802-io/src/demo.rs` currently has a separate web-demo stepper that
+  repeats part of the emulator semantics. That separation must be removed after
+  the full emulator path can step browser demos one instruction at a time.
 
-## Emulator Work After ISA Support Lands
+## Opcode-Family Checklist
 
-Once the ISA crate exposes those instructions, the emulator can add execution
-semantics in small slices:
+The following families must be represented in the shared ISA crate, accepted by
+the assembler, executed by the emulator, and covered by tests. Mnemonic aliases
+should be accepted where historically common, while disassembly should choose a
+stable canonical spelling.
 
-1. Register transfer and selector instructions: `GLO`, `GHI`, `SEP`, `SEX`,
-   `DEC`, and `LDN`.
-2. Memory-reference instructions: `LDA`, `LDX`, `LDXA`, `STXD`, `IRX`.
-3. ALU and `DF` behavior.
-4. Short branch/skip completion.
-5. Long branch/skip completion.
-6. Interrupt/control behavior using the already-modeled `T`, `IE`, and
-   interrupt-pending state.
-7. DMA-adjacent behavior, including the `R0` address convention, without
-   modeling full cycle timing in the first pass.
+| Opcode range | Family | Current status |
+| --- | --- | --- |
+| `00` | `IDL` | Implemented. |
+| `0N` | `LDN Rn` for `R1..RF`; `00` remains `IDL` | Missing. |
+| `1N` | `INC Rn` | Implemented. |
+| `2N` | `DEC Rn` | Missing. |
+| `30..3F` | Short branch/skip: `BR`, `BQ`, `BZ`, `BDF`, `B1..B4`, `SKP`, `BNQ`, `BNZ`, `BNF`, `BN1..BN4` | Only `BR`, `B1..B4`, and `BN1..BN4` implemented. |
+| `4N` | `LDA Rn` | Missing. |
+| `5N` | `STR Rn` | Implemented. |
+| `60` | `IRX` | Missing. |
+| `61..67` | `OUT 1..7` | Implemented. |
+| `68` | architecturally unused / no operation slot | Must be decoded deliberately, not accidentally. |
+| `69..6F` | `INP 1..7` | Implemented. |
+| `70..7F` | `RET`, `DIS`, `LDXA`, `STXD`, `ADC`, `SDB`, `SHRC`, `SMB`, `SAV`, `MARK`, `REQ`, `SEQ`, `ADCI`, `SDBI`, `SHLC`, `SMBI` | Only `REQ` and `SEQ` implemented. |
+| `8N` | `GLO Rn` | Implemented. |
+| `9N` | `GHI Rn` | Missing. |
+| `AN` | `PLO Rn` | Implemented. |
+| `BN` | `PHI Rn` | Implemented. |
+| `C0..CF` | Long branch / long skip group: `LBR`, `LBQ`, `LBZ`, `LBDF`, `NOP`, `LSNQ`, `LSNZ`, `LSNF`, `LSKP`, `LBNQ`, `LBNZ`, `LBNF`, `LSIE`, `LSQ`, `LSZ`, `LSDF` | Missing. |
+| `DN` | `SEP Rn` | Missing. |
+| `EN` | `SEX Rn` | Implemented. |
+| `F0..FF` | ALU/immediate group: `LDX`, `OR`, `AND`, `XOR`, `ADD`, `SD`, `SHR`, `SM`, `LDI`, `ORI`, `ANI`, `XRI`, `ADI`, `SDI`, `SHL`, `SMI` | Only `ADD`, `LDI`, `ADI`, and `SHL` implemented. |
 
-Each slice should keep the runnable demos passing and include tests that cover
-edge cases for all relevant registers, wrapping, `DF`, `P`, `X`, and memory
-side effects.
+Important aliases and naming decisions:
+
+- `BDF` is also commonly described as branch on data flag; some references use
+  sign-oriented aliases such as `BPZ` for related conditions. Pick one
+  canonical spelling and document accepted aliases.
+- `BNF` is the negated data-flag branch.
+- `SHRC`/`RSHR` and `SHLC`/`RSHL` appear as aliases in 1802 material. Accept the
+  common aliases; emit one canonical disassembly spelling.
+- `NOP` in the `C` group and the unused `0x68` slot need explicit behavior in
+  the ISA and emulator. They should not be lumped into generic invalid opcode
+  handling without a deliberate decision.
+
+## Per-Repo Work
+
+### `sw-cdp1802-isa`
+
+Required:
+
+- Replace the demo-subset `Instruction` enum with variants for the full opcode
+  map.
+- Decode all 256 opcode values, including immediate-width and long-branch-width
+  instructions.
+- Encode every representable instruction.
+- Disassemble every instruction with stable canonical mnemonics.
+- Add exhaustive decode coverage tests over `0x00..=0xff`.
+- Add encode/decode round-trip tests for every instruction family, including all
+  sixteen register encodings where applicable.
+- Decide and test how invalid or architecturally unused byte patterns are
+  represented, especially `0x68`.
+
+### `sw-cdp1802-asm`
+
+Required:
+
+- Accept every canonical 1802 mnemonic.
+- Accept documented aliases where useful for historical source compatibility.
+- Support all register-family operands across `R0..RF`.
+- Support short branch page-local targets and long branch absolute targets with
+  clear range errors.
+- Keep `ORG` and `DB`, then add output/listing formats needed by demos and
+  cassette workflows.
+- Add tests that assemble one source covering every instruction family.
+- Add tests that assemble, disassemble/list, and reassemble representative
+  sources.
+
+### `sw-cdp1802-emulator`
+
+Required:
+
+- Execute every instruction exposed by `sw-cdp1802-isa`.
+- Model `P`, `X`, `T`, `D`, `DF`, `Q`, `IE`, external flags, and all sixteen
+  16-bit registers consistently.
+- Implement correct memory side effects for `LDN`, `LDA`, `LDX`, `LDXA`,
+  `STR`, `STXD`, `OUT`, `INP`, `SAV`, and `MARK`.
+- Implement ALU and `DF` semantics for add, subtract, shifts, logic, and
+  immediate variants.
+- Implement short and long branch/skip semantics, including page-local short
+  branch behavior.
+- Implement `RET`/`DIS` interrupt-enable state changes sufficiently for monitor,
+  cassette, and video DMA demos.
+- Add conformance tests by instruction family and integration programs that use
+  real assembled source.
+
+Cycle-exact timing is not required for the first full-ISA pass, but instruction
+side effects must be architecturally correct.
+
+### `sw-cdp1802-io`
+
+Required after shared support lands:
+
+- Remove the duplicate web-demo instruction executor in `src/demo.rs`.
+- Drive browser demos through shared emulator single-step APIs.
+- Keep the browser yield model: one or a small bounded number of CPU
+  instructions per timer/request-animation-frame callback, never a tight loop on
+  the browser thread.
+- Add memory-map configuration for base 256-byte ELF-II mode and expanded 4K
+  mode.
+- Add video-base configuration so 4K demos can point the 256-byte video page at
+  `0x0100` while code remains at `0x0000`.
+
+## Cassette Loader Demo Blocker
+
+The proposed 4K cassette-loader logo demo is valid and should be built after
+full shared ISA support.
+
+Target demo behavior:
+
+- 4K RAM at `0x0000..0x0fff`.
+- Toggled-in loader assembled at `0x0000`.
+- Video page at `0x0100..0x01ff`.
+- Rust emulates a cassette byte stream and status timing.
+- 1802 assembler code reads bytes from the cassette device and stores them into
+  the video page.
+- The logo appears gradually as memory fills.
+- The loader halts or loops after 256 bytes.
+
+This likely needs at least:
+
+- `INP`, already in the subset but must be part of the full shared ISA.
+- `INC`, already in the subset.
+- `GLO`, already in the subset.
+- `BNZ`, currently missing.
+- Either a real 256-byte counter loop or another full-ISA-valid loop strategy.
+
+The web demo must not fake the load by copying bytes directly into video memory.
+Rust may emulate the cassette hardware and byte availability; the CPU program
+must perform the memory writes.
+
+## Next-Step Sequence
+
+1. Expand `sw-cdp1802-isa` to the full opcode map, with exhaustive decode tests
+   and encode/decode round trips.
+2. Expand `sw-cdp1802-asm` to assemble every full-ISA instruction and produce
+   durable listings/output formats.
+3. Expand `sw-cdp1802-emulator` to execute every full-ISA instruction with
+   instruction-family tests and assembled integration programs.
+4. Refactor `sw-cdp1802-io` to call the shared emulator stepper instead of its
+   duplicate demo-local executor.
+5. Add 4K memory/video-base configuration in the emulator and web demo.
+6. Implement the cassette-loader logo demo using only full shared assembler and
+   emulator support.
+
