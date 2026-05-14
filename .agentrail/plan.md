@@ -1,1 +1,1 @@
-Track follow-up work for the CDP1802 joystick live web demo. Step 1 keeps the shared joystick assembly comments aligned with the web UI update that makes the EF4 polling loop apparent while the browser steps through instructions.
+Track the fix that makes the joystick demo program run continuously. Step 1 changes the shared assembly to loop instead of halt, keeps OUT instructions stable by selecting RF at loop start, and adapts the CLI example/test to stop after one loop for demo output.

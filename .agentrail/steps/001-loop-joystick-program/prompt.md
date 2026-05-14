@@ -1,0 +1,1 @@
+Update the shared joystick program to run continuously instead of halting. Mouse movement in the web demo must only affect the emulated RC delay inputs; it must not restart the CPU program. Keep the CLI demo able to show one complete loop and verify the joystick tests.

@@ -1,0 +1,8 @@
+number = 1
+slug = "loop-joystick-program"
+status = "in-progress"
+description = "Update the shared joystick program to run continuously instead of halting. Mo..."
+role = "production"
+context_files = []
+created_at = "2026-05-14T12:02:46"
+commits = []

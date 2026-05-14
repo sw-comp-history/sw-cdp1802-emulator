@@ -6,7 +6,7 @@ use std::io::{self, Write};
 use sw_cdp1802_asm::{assemble, assemble_intel_hex, assemble_listing};
 use sw_cdp1802_emulator::{
     CpuState, JoystickRcBoard, Memory, VIDEO_HEIGHT, VIDEO_SIZE_BYTES, VIDEO_WIDTH, VideoView,
-    format_cpu_state, format_hex_dump, run_with_joystick,
+    format_cpu_state, format_hex_dump, step_with_joystick,
 };
 
 pub const MAX_STEPS: u64 = 500;
@@ -38,8 +38,7 @@ pub fn run_frame(x: u8, y: u8) -> JoystickFrame {
     let mut state = CpuState::new();
     state.x = 15;
     let mut board = JoystickRcBoard::new(x, y);
-    let steps = run_with_joystick(&mut state, &mut memory, &mut board, MAX_STEPS)
-        .expect("run joystick demo");
+    let steps = run_one_loop(&mut state, &mut memory, &mut board);
 
     JoystickFrame {
         steps,
@@ -47,6 +46,17 @@ pub fn run_frame(x: u8, y: u8) -> JoystickFrame {
         memory,
         board,
     }
+}
+
+fn run_one_loop(state: &mut CpuState, memory: &mut Memory, board: &mut JoystickRcBoard) -> u64 {
+    let start = state.instr_count;
+    while state.instr_count - start < MAX_STEPS {
+        step_with_joystick(state, memory, Some(board)).expect("step joystick demo");
+        if state.instr_count > start && state.pc() == 0 {
+            return state.instr_count - start;
+        }
+    }
+    panic!("joystick demo did not complete one loop in {MAX_STEPS} instructions");
 }
 
 pub fn render_solid_video(memory: &Memory) -> String {

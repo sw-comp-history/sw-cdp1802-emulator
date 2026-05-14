@@ -47,7 +47,8 @@ fn joystick_demo_frame_places_ball_from_measured_x_y() {
 
     let frame = joystick_rc_demo::run_frame(128, 64);
 
-    assert!(frame.state.halted);
+    assert!(!frame.state.halted);
+    assert_eq!(frame.state.pc(), 0x0000);
     assert_eq!(frame.board.delay_for_axis(JoystickAxis::X), 2);
     assert_eq!(frame.board.delay_for_axis(JoystickAxis::Y), 1);
     assert_eq!(frame.state.read_reg(1), 0x0044);

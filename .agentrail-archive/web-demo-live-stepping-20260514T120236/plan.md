@@ -1,0 +1,1 @@
+Track follow-up work for the CDP1802 joystick live web demo. Step 1 keeps the shared joystick assembly comments aligned with the web UI update that makes the EF4 polling loop apparent while the browser steps through instructions.
