@@ -1,0 +1,1 @@
+Alphabetized the web demo dropdown and added a cassette audio waveform scope driven by bytes consumed through INP 4. Updated the cassette loader to discard leader bytes until a 0xa5 sync byte before loading the 256-byte payload, and added tests for demo ordering, waveform progression, and sync-before-load behavior.
