@@ -1,0 +1,1 @@
+Restored the joystick demo fault behavior in sw-cdp1802-io: when the ball overwrites the running program image, the demo now preserves the memory corruption and enters a visible fault state. Pushed web commit 4c7eb25.

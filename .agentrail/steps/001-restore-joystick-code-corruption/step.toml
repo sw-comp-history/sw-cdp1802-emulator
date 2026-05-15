@@ -1,8 +1,9 @@
 number = 1
 slug = "restore-joystick-code-corruption"
-status = "in-progress"
+status = "completed"
 description = "Fix sw-cdp1802-io joystick demo regression: moving the joystick upward must a..."
 role = "production"
 context_files = []
 created_at = "2026-05-15T08:44:51"
-commits = []
+completed_at = "2026-05-15T08:48:24"
+commits = ["2ecc6421905e52e3f5b680d061d14715f389b824"]
