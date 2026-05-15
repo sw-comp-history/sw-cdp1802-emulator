@@ -1,0 +1,1 @@
+Fix sw-cdp1802-io joystick demo regression: moving the joystick upward must allow the ball pixel to land in the shared low-memory program area and corrupt/crash the running program, as intended for the COSMAC ELF-II demo. Add regression tests, rebuild pages, run relevant checks, commit and push the web repo, then record this saga.

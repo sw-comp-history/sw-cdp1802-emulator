@@ -1,0 +1,1 @@
+Update sw-cdp1802-io Logo demo description so it explains the logo is static video data entered manually to produce the image, with no drawing code. Update README wording if it also implies code draws the logo. Keep scope to text/description, run relevant checks, commit and push sw-cdp1802-io, then record this saga.

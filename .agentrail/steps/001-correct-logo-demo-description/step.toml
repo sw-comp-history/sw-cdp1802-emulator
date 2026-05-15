@@ -1,0 +1,8 @@
+number = 1
+slug = "correct-logo-demo-description"
+status = "in-progress"
+description = "Update sw-cdp1802-io Logo demo description so it explains the logo is static ..."
+role = "production"
+context_files = []
+created_at = "2026-05-15T09:33:05"
+commits = []

@@ -1,0 +1,1 @@
+Completed joystick code crash regression; starting logo demo description correction.
