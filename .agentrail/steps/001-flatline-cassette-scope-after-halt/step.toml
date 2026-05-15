@@ -1,8 +1,9 @@
 number = 1
 slug = "flatline-cassette-scope-after-halt"
-status = "in-progress"
+status = "completed"
 description = "Update sw-cdp1802-io so the cassette scope shows a flat baseline when the cas..."
 role = "production"
 context_files = []
 created_at = "2026-05-14T21:15:08"
-commits = []
+completed_at = "2026-05-14T21:16:42"
+commits = ["f601004e39bacf9c9acd7e0b1c8f5a9072225d75"]
