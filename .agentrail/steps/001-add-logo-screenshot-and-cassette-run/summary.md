@@ -1,0 +1,1 @@
+Updated sw-cdp1802-io README with a Playwright-captured Logo demo screenshot using an ep2ms cache-busting query, added cassette Run-button behavior with flat idle/halted tape scope, adjusted column proportions, rebuilt pages, and pushed web commit c105bdd.
