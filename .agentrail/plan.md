@@ -1,1 +1,1 @@
-Update sw-cdp1802-io README to include the COSMAC ELF-II board image. Copy ~/Dropbox/FilesSharedWithWMA/images/cosmac-elf-ii-board.jpg into ./images, link it inline in README, run relevant checks, commit and push the web repo, then record this saga.
+Update sw-cdp1802-io live demo to include the top-right GitHub triangle link to the repository, following the pattern used in ~/github/sw-embed/web-sw-cor24-basic. Rebuild pages, run relevant checks, commit and push the web repo, then record this saga.

@@ -1,0 +1,8 @@
+number = 1
+slug = "add-github-corner-link"
+status = "in-progress"
+description = "Update sw-cdp1802-io live demo to include the top-right GitHub triangle link ..."
+role = "production"
+context_files = []
+created_at = "2026-05-15T12:00:51"
+commits = []
