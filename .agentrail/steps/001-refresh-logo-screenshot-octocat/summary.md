@@ -1,0 +1,1 @@
+Refreshed sw-cdp1802-io Logo demo screenshot so the README image shows the GitHub corner link, updated the ep2ms cache-busting timestamp, and pushed web commit f5ce18a.
