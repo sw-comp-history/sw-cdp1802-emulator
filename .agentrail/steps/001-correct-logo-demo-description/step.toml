@@ -1,8 +1,9 @@
 number = 1
 slug = "correct-logo-demo-description"
-status = "in-progress"
+status = "completed"
 description = "Update sw-cdp1802-io Logo demo description so it explains the logo is static ..."
 role = "production"
 context_files = []
 created_at = "2026-05-15T09:33:05"
-commits = []
+completed_at = "2026-05-15T09:36:21"
+commits = ["8b3b23c1645f88cb4e024587c47c48b921677983"]

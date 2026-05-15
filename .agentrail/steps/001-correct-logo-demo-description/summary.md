@@ -1,0 +1,1 @@
+Corrected sw-cdp1802-io Logo demo wording to describe manually entered static video data with no drawing code, regenerated the ELF favicon, rebuilt pages, and pushed web commit 99d9ead.
