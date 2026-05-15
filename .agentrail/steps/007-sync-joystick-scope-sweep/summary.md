@@ -1,0 +1,1 @@
+Corrected the joystick RC oscilloscope sweep so displayed pulses are trigger-relative and left-aligned instead of sliding across a moving time window. X and Y traces now vary by pulse width/drop offset while keeping the leading edge at the sweep origin.
