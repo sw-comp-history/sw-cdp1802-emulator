@@ -1,0 +1,1 @@
+Added the default Add demo and per-demo descriptions in sw-cdp1802-io, including the joystick warning, then rebuilt and pushed pages at sw-cdp1802-io commit f3bf8d4.
