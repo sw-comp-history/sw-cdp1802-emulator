@@ -1,0 +1,8 @@
+number = 6
+slug = "add-joystick-rc-oscilloscope"
+status = "pending"
+description = "Add the joystick RC oscilloscope visualization to sw-cdp1802-io. In the Joyst..."
+role = "legacy"
+context_files = []
+created_at = "2026-05-14T18:54:23"
+commits = []

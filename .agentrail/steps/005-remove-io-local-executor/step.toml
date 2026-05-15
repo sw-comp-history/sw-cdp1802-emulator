@@ -1,8 +1,9 @@
 number = 5
 slug = "remove-io-local-executor"
-status = "in-progress"
+status = "completed"
 description = "Refactor sw-cdp1802-io so browser demos use the shared sw-cdp1802-emulator si..."
 role = "legacy"
 context_files = []
 created_at = "2026-05-14T18:41:45"
-commits = []
+completed_at = "2026-05-14T18:54:23"
+commits = ["f9d7b3e481d6e3bf6ae5bc054dcf589ee988a50f"]
