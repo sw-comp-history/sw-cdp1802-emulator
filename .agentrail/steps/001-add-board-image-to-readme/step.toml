@@ -1,0 +1,8 @@
+number = 1
+slug = "add-board-image-to-readme"
+status = "in-progress"
+description = "Update sw-cdp1802-io README to include the COSMAC ELF-II board image. Copy ~/..."
+role = "production"
+context_files = []
+created_at = "2026-05-15T11:57:29"
+commits = []

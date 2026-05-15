@@ -1,0 +1,1 @@
+Update sw-cdp1802-io README to include the COSMAC ELF-II board image. Copy ~/Dropbox/FilesSharedWithWMA/images/cosmac-elf-ii-board.jpg into ./images, link it inline in README, run relevant checks, commit and push sw-cdp1802-io, then record this saga.
