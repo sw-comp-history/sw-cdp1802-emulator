@@ -1,0 +1,1 @@
+Expanded sw-cdp1802-isa to the full CDP1802 opcode map with full decode, encode, disassembly, exhaustive opcode round-trip tests, and representative instruction-family vectors; kept the emulator buildable by returning an explicit UnsupportedInstruction for not-yet-executed new instructions.

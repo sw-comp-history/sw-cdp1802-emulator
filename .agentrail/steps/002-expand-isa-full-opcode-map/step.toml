@@ -1,8 +1,9 @@
 number = 2
 slug = "expand-isa-full-opcode-map"
-status = "in-progress"
+status = "completed"
 description = "Expand sw-cdp1802-isa from the current demo subset to the full RCA CDP1802 op..."
 role = "legacy"
 context_files = []
 created_at = "2026-05-14T16:21:34"
-commits = []
+completed_at = "2026-05-14T18:24:08"
+commits = ["c0df9b9673438dc8d2c92907e9c631c6844596bc"]
