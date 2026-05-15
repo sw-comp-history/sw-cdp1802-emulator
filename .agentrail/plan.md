@@ -1,1 +1,1 @@
-Update sw-cdp1802-io so the cassette scope shows a flat baseline when the cassette loader program has halted. Add test coverage, rebuild pages, run relevant checks, commit and push the web repo, then record this saga.
+Correct sw-cdp1802-io joystick RC scope horizontal scaling so the initial centered pulse width is close to one third of the scope view rather than about one eighth. Add test coverage for visible pulse width, rebuild pages, run relevant checks, commit and push the web repo, then record this saga.

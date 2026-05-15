@@ -1,0 +1,1 @@
+Correct sw-cdp1802-io joystick RC scope horizontal scaling so the initial centered pulse width is close to one third of the scope view rather than about one eighth. Add test coverage for visible pulse width, rebuild pages, run relevant checks, commit and push sw-cdp1802-io, then record this saga.

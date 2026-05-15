@@ -1,0 +1,8 @@
+number = 1
+slug = "widen-joystick-scope-pulse"
+status = "in-progress"
+description = "Correct sw-cdp1802-io joystick RC scope horizontal scaling so the initial cen..."
+role = "production"
+context_files = []
+created_at = "2026-05-14T21:21:49"
+commits = []

@@ -1,0 +1,1 @@
+Update sw-cdp1802-io so the cassette scope shows a flat baseline when the cassette loader program has halted. Add test coverage, rebuild pages, run relevant checks, commit and push the web repo, then record this saga.
