@@ -1,0 +1,1 @@
+Implemented emulator execution semantics for the full CDP1802 instruction set exposed by sw-cdp1802-isa, including memory/register operations, short and long branches/skips, RET/DIS, SAV/MARK, ALU and immediate variants, carry/borrow shifts, NOP, and reserved 0x68. Added focused instruction-family tests plus an assembled full-ISA integration program.
