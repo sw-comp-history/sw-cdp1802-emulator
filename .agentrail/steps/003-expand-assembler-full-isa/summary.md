@@ -1,0 +1,1 @@
+Expanded sw-cdp1802-asm to assemble the full CDP1802 opcode map exposed by sw-cdp1802-isa, including register, branch/skip, long branch/skip, control, I/O, memory, ALU, immediate families, listings, and aliases. Verified assembler fmt/tests/clippy and downstream emulator tests.

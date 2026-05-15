@@ -1,0 +1,8 @@
+number = 4
+slug = "expand-emulator-full-isa"
+status = "pending"
+description = "Implement emulator semantics for the full RCA CDP1802 instruction set now mod..."
+role = "legacy"
+context_files = []
+created_at = "2026-05-14T18:34:03"
+commits = []
