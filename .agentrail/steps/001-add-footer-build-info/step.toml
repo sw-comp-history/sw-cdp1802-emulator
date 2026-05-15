@@ -1,0 +1,8 @@
+number = 1
+slug = "add-footer-build-info"
+status = "in-progress"
+description = "Update sw-cdp1802-io footer to show build metadata: host, short commit SHA, a..."
+role = "production"
+context_files = []
+created_at = "2026-05-14T21:04:46"
+commits = []
