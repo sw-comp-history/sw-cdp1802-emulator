@@ -1,0 +1,1 @@
+Updated sw-cdp1802-io scope waveform behavior: RC pulse display is widened 2x, cassette scope is blank before reads, and consumed bytes render as square-wave FSK tones. Pushed web commit 32ff1fb.
