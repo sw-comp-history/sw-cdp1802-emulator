@@ -1,0 +1,1 @@
+Update sw-cdp1802-io so the cassette scope shows a flat baseline when the cassette loader program has halted. Treat the halted state as no active tape signal instead of replaying the last waveform. Add test coverage, rebuild pages, run relevant checks, commit and push sw-cdp1802-io, then record this saga.

@@ -1,1 +1,1 @@
-Update sw-cdp1802-io cassette scope rendering so the beginning and end of the display show a flat baseline when there is no cassette signal, rather than continuing artificial tones outside the available signal. Rebuild pages, run relevant checks, commit and push the web repo, then record this saga.
+Update sw-cdp1802-io so the cassette scope shows a flat baseline when the cassette loader program has halted. Add test coverage, rebuild pages, run relevant checks, commit and push the web repo, then record this saga.
