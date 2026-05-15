@@ -1,0 +1,8 @@
+number = 7
+slug = "sync-joystick-scope-sweep"
+status = "in-progress"
+description = "Correct the joystick RC oscilloscope in sw-cdp1802-io so the sweep is synchro..."
+role = "production"
+context_files = []
+created_at = "2026-05-14T19:04:00"
+commits = []
