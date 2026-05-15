@@ -1,8 +1,9 @@
 number = 8
 slug = "add-4k-cassette-loader-demo"
-status = "in-progress"
+status = "completed"
 description = "Implement the 4K cassette-loader logo demo using the shared full assembler an..."
 role = "legacy"
 context_files = []
 created_at = "2026-05-14T19:01:32"
-commits = []
+completed_at = "2026-05-14T19:16:02"
+commits = ["4fab15abc891c0e4a04eb91ce323f2159f5f09a0"]
