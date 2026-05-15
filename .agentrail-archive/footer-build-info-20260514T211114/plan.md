@@ -1,0 +1,1 @@
+Update sw-cdp1802-io footer to show build metadata: host, short commit SHA, and ISO timestamp. Generate the metadata from the build script, render it in the Yew footer with reasonable fallback values, rebuild pages, run relevant checks, commit and push the web repo, then record this saga.

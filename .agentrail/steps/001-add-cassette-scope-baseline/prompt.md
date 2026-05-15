@@ -1,0 +1,1 @@
+Update sw-cdp1802-io cassette scope rendering so the beginning and end of the display show a flat baseline when there is no cassette signal, rather than continuing artificial tones outside the available signal. Add or update tests for quiet start/end regions, rebuild pages, run relevant checks, commit and push sw-cdp1802-io, then record this saga.

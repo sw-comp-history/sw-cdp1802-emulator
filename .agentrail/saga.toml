@@ -1,6 +1,6 @@
-name = "footer-build-info"
-status = "completed"
+name = "cassette-scope-baseline"
+status = "active"
 current_step = 1
-created_at = "2026-05-14T21:04:40"
+created_at = "2026-05-14T21:11:25"
 plan_file = ".agentrail/plan.md"
 retroactive = false

@@ -1,0 +1,8 @@
+number = 1
+slug = "add-cassette-scope-baseline"
+status = "in-progress"
+description = "Update sw-cdp1802-io cassette scope rendering so the beginning and end of the..."
+role = "production"
+context_files = []
+created_at = "2026-05-14T21:11:31"
+commits = []
