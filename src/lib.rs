@@ -13,7 +13,7 @@ pub use board::{BoardIo, FrontPanel, JoystickAxis, JoystickRcBoard};
 pub use dump::{format_cpu_state, format_hex_dump};
 pub use exec::{
     ExecError, run, run_with_front_panel, run_with_joystick, step, step_with_front_panel,
-    step_with_joystick,
+    step_with_io, step_with_joystick,
 };
 pub use memory::Memory;
 pub use state::CpuState;

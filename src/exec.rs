@@ -39,6 +39,14 @@ pub fn step_with_joystick(
     step_with_board(state, mem, board)
 }
 
+pub fn step_with_io<B: BoardIo>(
+    state: &mut CpuState,
+    mem: &mut Memory,
+    board: Option<&mut B>,
+) -> Result<(), ExecError> {
+    step_with_board(state, mem, board)
+}
+
 fn step_with_board<B: BoardIo>(
     state: &mut CpuState,
     mem: &mut Memory,

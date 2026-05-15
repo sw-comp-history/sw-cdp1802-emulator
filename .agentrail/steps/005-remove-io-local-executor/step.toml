@@ -1,6 +1,6 @@
 number = 5
 slug = "remove-io-local-executor"
-status = "pending"
+status = "in-progress"
 description = "Refactor sw-cdp1802-io so browser demos use the shared sw-cdp1802-emulator si..."
 role = "legacy"
 context_files = []
