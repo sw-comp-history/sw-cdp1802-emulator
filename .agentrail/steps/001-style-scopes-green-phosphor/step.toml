@@ -1,0 +1,8 @@
+number = 1
+slug = "style-scopes-green-phosphor"
+status = "in-progress"
+description = "Update sw-cdp1802-io so both oscilloscope displays use a black background and..."
+role = "production"
+context_files = []
+created_at = "2026-05-14T20:54:48"
+commits = []

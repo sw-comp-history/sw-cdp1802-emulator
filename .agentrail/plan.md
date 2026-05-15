@@ -1,1 +1,1 @@
-Polish demo descriptions and add a default step-through Add demo.
+Update sw-cdp1802-io so both oscilloscope displays use a black background and bright green phosphor traces. Keep the change scoped to scope styling, rebuild pages, run the relevant Rust checks, commit and push the web repo, then complete this saga.

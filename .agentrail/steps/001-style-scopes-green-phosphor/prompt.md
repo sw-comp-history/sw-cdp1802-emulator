@@ -1,0 +1,1 @@
+Update sw-cdp1802-io so both oscilloscope displays use a black background and bright green phosphor traces. Keep the change scoped to scope styling. Rebuild pages, run relevant checks, commit and push sw-cdp1802-io, then record this saga.
