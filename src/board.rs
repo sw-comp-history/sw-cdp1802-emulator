@@ -7,7 +7,7 @@ use crate::state::CpuState;
 pub trait BoardIo {
     fn sync_inputs_to_cpu(&self, state: &mut CpuState);
 
-    fn input_port(&self, port: u8) -> u8;
+    fn input_port(&mut self, port: u8) -> u8;
 
     fn output_port(&mut self, port: u8, value: u8);
 
@@ -38,7 +38,7 @@ impl BoardIo for FrontPanel {
         state.set_external_flag(ExternalFlag::Ef4, self.input_pressed);
     }
 
-    fn input_port(&self, port: u8) -> u8 {
+    fn input_port(&mut self, port: u8) -> u8 {
         match port {
             Self::PORT_HEX_KEYPAD => self.input_latch,
             _ => 0,
@@ -113,7 +113,7 @@ impl BoardIo for JoystickRcBoard {
         state.set_external_flag(ExternalFlag::Ef4, self.ready());
     }
 
-    fn input_port(&self, _port: u8) -> u8 {
+    fn input_port(&mut self, _port: u8) -> u8 {
         0
     }
 

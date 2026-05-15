@@ -1,6 +1,6 @@
 number = 8
 slug = "add-4k-cassette-loader-demo"
-status = "pending"
+status = "in-progress"
 description = "Implement the 4K cassette-loader logo demo using the shared full assembler an..."
 role = "legacy"
 context_files = []

@@ -185,7 +185,10 @@ fn exec_instruction<B: BoardIo>(
             state.write_reg(idx, addr.wrapping_add(1));
         }
         Instruction::Input { port } => {
-            let value = board.as_deref().map_or(0, |board| board.input_port(port));
+            let value = match board {
+                Some(ref mut board) => board.input_port(port),
+                None => 0,
+            };
             mem.write_byte(state.read_reg(state.x), value);
             state.d = value;
         }
