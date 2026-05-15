@@ -1,0 +1,1 @@
+Copied the COSMAC ELF-II board photo into sw-cdp1802-io/images, linked it inline in README, and pushed web commit 18a0472.
