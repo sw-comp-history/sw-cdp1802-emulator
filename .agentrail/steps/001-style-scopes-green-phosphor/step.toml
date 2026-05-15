@@ -1,8 +1,9 @@
 number = 1
 slug = "style-scopes-green-phosphor"
-status = "in-progress"
+status = "completed"
 description = "Update sw-cdp1802-io so both oscilloscope displays use a black background and..."
 role = "production"
 context_files = []
 created_at = "2026-05-14T20:54:48"
-commits = []
+completed_at = "2026-05-14T20:56:28"
+commits = ["a7c149b005956f9430fbaee2830ac92b20d9bdfb"]
