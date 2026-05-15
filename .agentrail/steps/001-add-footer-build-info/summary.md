@@ -1,0 +1,1 @@
+Added footer build metadata to sw-cdp1802-io using the same build.rs env! pattern as web-sw-cor24-basic, rebuilt pages, and pushed web commit 3997396.
