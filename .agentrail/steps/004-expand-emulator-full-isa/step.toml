@@ -1,6 +1,6 @@
 number = 4
 slug = "expand-emulator-full-isa"
-status = "pending"
+status = "in-progress"
 description = "Implement emulator semantics for the full RCA CDP1802 instruction set now mod..."
 role = "legacy"
 context_files = []

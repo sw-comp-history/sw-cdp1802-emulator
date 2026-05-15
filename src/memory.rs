@@ -44,8 +44,12 @@ impl Memory {
             .collect()
     }
 
-    pub fn fetch_bytes(&self, addr: u16) -> [u8; 2] {
-        [self.read_byte(addr), self.read_byte(addr.wrapping_add(1))]
+    pub fn fetch_bytes(&self, addr: u16) -> [u8; 3] {
+        [
+            self.read_byte(addr),
+            self.read_byte(addr.wrapping_add(1)),
+            self.read_byte(addr.wrapping_add(2)),
+        ]
     }
 
     pub fn decode_at(&self, addr: u16) -> Result<(sw_cdp1802_isa::Instruction, u16), DecodeError> {

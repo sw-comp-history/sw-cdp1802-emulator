@@ -1,6 +1,6 @@
-//! Instruction execution dispatch for the demo subset.
+//! Instruction execution dispatch.
 
-use sw_cdp1802_isa::Instruction;
+use sw_cdp1802_isa::{Instruction, LongBranchCondition, LongSkipCondition};
 use sw_isa_core::DecodeError;
 
 use crate::board::{BoardIo, FrontPanel, JoystickRcBoard};
@@ -11,7 +11,6 @@ use crate::state::CpuState;
 pub enum ExecError {
     Halted,
     Decode(DecodeError),
-    UnsupportedInstruction(Instruction),
 }
 
 impl From<DecodeError> for ExecError {
@@ -57,7 +56,7 @@ fn step_with_board<B: BoardIo>(
     state.advance_pc(size);
     state.instr_count += 1;
     exec_instruction(state, mem, board.as_deref_mut(), insn)?;
-    if let Some(board) = board.as_deref_mut() {
+    if let Some(board) = board {
         board.sync_outputs_from_cpu(state);
         board.after_instruction();
     }
@@ -113,9 +112,35 @@ fn exec_instruction<B: BoardIo>(
             let value = state.read_reg(idx).wrapping_add(1);
             state.write_reg(idx, value);
         }
+        Instruction::LoadVia { reg } => {
+            state.d = mem.read_byte(state.read_reg(reg.index_u8()));
+        }
+        Instruction::Decrement { reg } => {
+            let idx = reg.index_u8();
+            let value = state.read_reg(idx).wrapping_sub(1);
+            state.write_reg(idx, value);
+        }
         Instruction::Branch { target } => {
             let high = state.pc() & 0xFF00;
             state.set_pc(high | target as u16);
+        }
+        Instruction::BranchQ { expected, target } => {
+            if state.q == expected {
+                let high = state.pc() & 0xFF00;
+                state.set_pc(high | target as u16);
+            }
+        }
+        Instruction::BranchZero { expected, target } => {
+            if (state.d == 0) == expected {
+                let high = state.pc() & 0xFF00;
+                state.set_pc(high | target as u16);
+            }
+        }
+        Instruction::BranchDataFlag { expected, target } => {
+            if state.df == expected {
+                let high = state.pc() & 0xFF00;
+                state.set_pc(high | target as u16);
+            }
         }
         Instruction::BranchExternalFlag {
             flag,
@@ -127,8 +152,20 @@ fn exec_instruction<B: BoardIo>(
                 state.set_pc(high | target as u16);
             }
         }
+        Instruction::ShortSkip { .. } => {}
+        Instruction::LoadAdvance { reg } => {
+            let idx = reg.index_u8();
+            let addr = state.read_reg(idx);
+            state.d = mem.read_byte(addr);
+            state.write_reg(idx, addr.wrapping_add(1));
+        }
         Instruction::Store { reg } => {
             mem.write_byte(state.read_reg(reg.index_u8()), state.d);
+        }
+        Instruction::Irx => {
+            let idx = state.x & 0x0F;
+            let value = state.read_reg(idx).wrapping_add(1);
+            state.write_reg(idx, value);
         }
         Instruction::Output { port } => {
             let idx = state.x & 0x0F;
@@ -144,6 +181,52 @@ fn exec_instruction<B: BoardIo>(
             mem.write_byte(state.read_reg(state.x), value);
             state.d = value;
         }
+        Instruction::Reserved68 => {}
+        Instruction::Return => {
+            restore_xp_from_stack(state, mem);
+            state.interrupt_enabled = true;
+        }
+        Instruction::DisableInterrupt => {
+            restore_xp_from_stack(state, mem);
+            state.interrupt_enabled = false;
+        }
+        Instruction::LoadViaXAdvance => {
+            let idx = state.x & 0x0F;
+            let addr = state.read_reg(idx);
+            state.d = mem.read_byte(addr);
+            state.write_reg(idx, addr.wrapping_add(1));
+        }
+        Instruction::StoreViaXDecrement => {
+            let idx = state.x & 0x0F;
+            let addr = state.read_reg(idx);
+            mem.write_byte(addr, state.d);
+            state.write_reg(idx, addr.wrapping_sub(1));
+        }
+        Instruction::AddWithCarry => {
+            let value = mem.read_byte(state.read_reg(state.x));
+            add_into_d(state, value, state.df);
+        }
+        Instruction::SubtractDWithBorrow => {
+            let value = mem.read_byte(state.read_reg(state.x));
+            subtract_into_d(state, value, state.d, !state.df);
+        }
+        Instruction::ShiftRightWithCarry => {
+            let carry_in = state.df;
+            state.df = state.d & 0x01 != 0;
+            state.d = (state.d >> 1) | if carry_in { 0x80 } else { 0 };
+        }
+        Instruction::SubtractMemoryWithBorrow => {
+            let value = mem.read_byte(state.read_reg(state.x));
+            subtract_into_d(state, state.d, value, !state.df);
+        }
+        Instruction::Save => {
+            mem.write_byte(state.read_reg(state.x), state.t);
+        }
+        Instruction::Mark => {
+            mem.write_byte(state.read_reg(2), state.t);
+            state.x = state.p & 0x0F;
+            state.write_reg(2, state.read_reg(2).wrapping_sub(1));
+        }
         Instruction::ResetQ => {
             state.q = false;
         }
@@ -152,6 +235,9 @@ fn exec_instruction<B: BoardIo>(
         }
         Instruction::GetLow { reg } => {
             state.d = (state.read_reg(reg.index_u8()) & 0x00FF) as u8;
+        }
+        Instruction::GetHigh { reg } => {
+            state.d = (state.read_reg(reg.index_u8()) >> 8) as u8;
         }
         Instruction::PutLow { reg } => {
             let idx = reg.index_u8();
@@ -166,25 +252,133 @@ fn exec_instruction<B: BoardIo>(
         Instruction::LoadImmediate { value } => {
             state.d = value;
         }
+        Instruction::AddWithCarryImmediate { value } => {
+            add_into_d(state, value, state.df);
+        }
+        Instruction::SubtractDWithBorrowImmediate { value } => {
+            subtract_into_d(state, value, state.d, !state.df);
+        }
+        Instruction::ShiftLeftWithCarry => {
+            let carry_in = state.df;
+            state.df = state.d & 0x80 != 0;
+            state.d = state.d.wrapping_shl(1) | u8::from(carry_in);
+        }
+        Instruction::SubtractMemoryWithBorrowImmediate { value } => {
+            subtract_into_d(state, state.d, value, !state.df);
+        }
+        Instruction::LongBranch { condition, target } => {
+            if long_branch_condition_matches(state, condition) {
+                state.set_pc(target);
+            }
+        }
+        Instruction::NoOperation => {}
+        Instruction::LongSkip { condition } => {
+            if long_skip_condition_matches(state, condition) {
+                state.advance_pc(2);
+            }
+        }
+        Instruction::SetP { reg } => {
+            state.p = reg.index_u8();
+        }
         Instruction::SetX { reg } => {
             state.x = reg.index_u8();
         }
+        Instruction::LoadViaX => {
+            state.d = mem.read_byte(state.read_reg(state.x));
+        }
+        Instruction::Or => {
+            state.d |= mem.read_byte(state.read_reg(state.x));
+        }
+        Instruction::And => {
+            state.d &= mem.read_byte(state.read_reg(state.x));
+        }
+        Instruction::Xor => {
+            state.d ^= mem.read_byte(state.read_reg(state.x));
+        }
         Instruction::Add => {
             let value = mem.read_byte(state.read_reg(state.x));
-            let sum = state.d as u16 + value as u16;
-            state.d = sum as u8;
-            state.df = sum > 0xFF;
+            add_into_d(state, value, false);
+        }
+        Instruction::SubtractDNoBorrow => {
+            let value = mem.read_byte(state.read_reg(state.x));
+            subtract_into_d(state, value, state.d, false);
+        }
+        Instruction::ShiftRight => {
+            state.df = state.d & 0x01 != 0;
+            state.d >>= 1;
+        }
+        Instruction::SubtractMemoryNoBorrow => {
+            let value = mem.read_byte(state.read_reg(state.x));
+            subtract_into_d(state, state.d, value, false);
         }
         Instruction::AddImmediate { value } => {
-            let sum = state.d as u16 + value as u16;
-            state.d = sum as u8;
-            state.df = sum > 0xFF;
+            add_into_d(state, value, false);
+        }
+        Instruction::OrImmediate { value } => {
+            state.d |= value;
+        }
+        Instruction::AndImmediate { value } => {
+            state.d &= value;
+        }
+        Instruction::XorImmediate { value } => {
+            state.d ^= value;
+        }
+        Instruction::SubtractDImmediateNoBorrow { value } => {
+            subtract_into_d(state, value, state.d, false);
         }
         Instruction::ShiftLeft => {
             state.df = state.d & 0x80 != 0;
             state.d = state.d.wrapping_shl(1);
         }
-        other => return Err(ExecError::UnsupportedInstruction(other)),
+        Instruction::SubtractMemoryNoBorrowImmediate { value } => {
+            subtract_into_d(state, state.d, value, false);
+        }
     }
     Ok(())
+}
+
+fn restore_xp_from_stack(state: &mut CpuState, mem: &Memory) {
+    let idx = state.x & 0x0F;
+    let value = mem.read_byte(state.read_reg(idx));
+    state.write_reg(idx, state.read_reg(idx).wrapping_add(1));
+    state.x = value >> 4;
+    state.p = value & 0x0F;
+}
+
+fn add_into_d(state: &mut CpuState, value: u8, carry: bool) {
+    let sum = state.d as u16 + value as u16 + u16::from(carry);
+    state.d = sum as u8;
+    state.df = sum > 0xFF;
+}
+
+fn subtract_into_d(state: &mut CpuState, minuend: u8, subtrahend: u8, borrow: bool) {
+    let subtrahend = subtrahend as u16 + u16::from(borrow);
+    let minuend = minuend as u16;
+    state.d = minuend.wrapping_sub(subtrahend) as u8;
+    state.df = minuend >= subtrahend;
+}
+
+fn long_branch_condition_matches(state: &CpuState, condition: LongBranchCondition) -> bool {
+    match condition {
+        LongBranchCondition::Always => true,
+        LongBranchCondition::Q => state.q,
+        LongBranchCondition::Zero => state.d == 0,
+        LongBranchCondition::DataFlag => state.df,
+        LongBranchCondition::NotQ => !state.q,
+        LongBranchCondition::NotZero => state.d != 0,
+        LongBranchCondition::NotDataFlag => !state.df,
+    }
+}
+
+fn long_skip_condition_matches(state: &CpuState, condition: LongSkipCondition) -> bool {
+    match condition {
+        LongSkipCondition::Always => true,
+        LongSkipCondition::Q => state.q,
+        LongSkipCondition::Zero => state.d == 0,
+        LongSkipCondition::DataFlag => state.df,
+        LongSkipCondition::NotQ => !state.q,
+        LongSkipCondition::NotZero => state.d != 0,
+        LongSkipCondition::NotDataFlag => !state.df,
+        LongSkipCondition::InterruptEnabled => state.interrupt_enabled,
+    }
 }
