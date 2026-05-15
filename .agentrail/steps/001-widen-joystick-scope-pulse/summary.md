@@ -1,0 +1,1 @@
+Corrected sw-cdp1802-io joystick RC scope horizontal scale from 2x to 6x so the centered pulse is roughly one third of the display, rebuilt pages, and pushed web commit 6238dd8.
