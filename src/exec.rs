@@ -11,6 +11,7 @@ use crate::state::CpuState;
 pub enum ExecError {
     Halted,
     Decode(DecodeError),
+    UnsupportedInstruction(Instruction),
 }
 
 impl From<DecodeError> for ExecError {
@@ -55,7 +56,7 @@ fn step_with_board<B: BoardIo>(
     let (insn, size) = mem.decode_at(pc)?;
     state.advance_pc(size);
     state.instr_count += 1;
-    exec_instruction(state, mem, board.as_deref_mut(), insn);
+    exec_instruction(state, mem, board.as_deref_mut(), insn)?;
     if let Some(board) = board.as_deref_mut() {
         board.sync_outputs_from_cpu(state);
         board.after_instruction();
@@ -102,7 +103,7 @@ fn exec_instruction<B: BoardIo>(
     mem: &mut Memory,
     mut board: Option<&mut B>,
     insn: Instruction,
-) {
+) -> Result<(), ExecError> {
     match insn {
         Instruction::Idle => {
             state.halted = true;
@@ -183,5 +184,7 @@ fn exec_instruction<B: BoardIo>(
             state.df = state.d & 0x80 != 0;
             state.d = state.d.wrapping_shl(1);
         }
+        other => return Err(ExecError::UnsupportedInstruction(other)),
     }
+    Ok(())
 }

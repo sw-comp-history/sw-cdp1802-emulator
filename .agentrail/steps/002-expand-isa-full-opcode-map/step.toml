@@ -1,6 +1,6 @@
 number = 2
 slug = "expand-isa-full-opcode-map"
-status = "pending"
+status = "in-progress"
 description = "Expand sw-cdp1802-isa from the current demo subset to the full RCA CDP1802 op..."
 role = "legacy"
 context_files = []
