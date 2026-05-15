@@ -1,0 +1,1 @@
+Refresh sw-cdp1802-io README Logo demo screenshot so it shows the new GitHub Octocat corner link. Capture the Logo demo with Playwright CLI, update images/logo-screenshot.png and the README ?ts=<ms-since-epoch> cache-busting value from ep2ms, commit and push sw-cdp1802-io, then record this saga.

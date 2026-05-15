@@ -1,0 +1,1 @@
+Update sw-cdp1802-io live demo to include the top-right GitHub triangle link to the repository, following the pattern used in ~/github/sw-embed/web-sw-cor24-basic. Rebuild pages, run relevant checks, commit and push the web repo, then record this saga.

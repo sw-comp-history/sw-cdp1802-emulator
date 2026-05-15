@@ -1,1 +1,1 @@
-Update sw-cdp1802-io live demo to include the top-right GitHub triangle link to the repository, following the pattern used in ~/github/sw-embed/web-sw-cor24-basic. Rebuild pages, run relevant checks, commit and push the web repo, then record this saga.
+Refresh sw-cdp1802-io README Logo demo screenshot so it shows the new GitHub Octocat corner link. Capture the Logo demo with Playwright CLI, update images/logo-screenshot.png and the README ?ts=<ms-since-epoch> cache-busting value from ep2ms, commit and push the web repo, then record this saga.
