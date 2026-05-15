@@ -1,1 +1,1 @@
-Polish the CDP1802 web demos after the full ISA saga. Step 1 alphabetizes the demo selector and adds a cassette audio waveform scope driven by the simulated cassette reads without changing CPU memory/register behavior.
+Polish demo descriptions and add a default step-through Add demo.

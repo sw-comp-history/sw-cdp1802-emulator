@@ -1,0 +1,8 @@
+number = 1
+slug = "add-demo-and-descriptions"
+status = "in-progress"
+description = "Update sw-cdp1802-io so every demo has a concise description near the TV moni..."
+role = "production"
+context_files = []
+created_at = "2026-05-14T19:29:29"
+commits = []
