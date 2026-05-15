@@ -1,0 +1,8 @@
+number = 1
+slug = "add-logo-screenshot-to-readme"
+status = "blocked"
+description = "Update sw-cdp1802-io README with a Logo demo screenshot. Use Playwright CLI t..."
+role = "production"
+context_files = []
+created_at = "2026-05-15T10:05:07"
+commits = []

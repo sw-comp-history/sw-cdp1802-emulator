@@ -1,0 +1,1 @@
+Update sw-cdp1802-io README with a Logo demo screenshot. Use Playwright CLI to capture the correct Logo demo to ./images/logo-screenshot.png, use ep2ms to generate a millisecond timestamp, and reference the screenshot in README with a ?ts=<ms-since-epoch> cache-busting query. Run relevant checks, commit and push the web repo, then record this saga.

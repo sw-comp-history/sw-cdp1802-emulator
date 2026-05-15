@@ -1,0 +1,1 @@
+Update sw-cdp1802-io Logo demo description so it explains the logo is static video data entered manually to produce the image, with no drawing code. Keep the change scoped to text/description, run relevant checks, commit and push the web repo, then record this saga.

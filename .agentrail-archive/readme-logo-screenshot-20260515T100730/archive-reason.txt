@@ -1,0 +1,1 @@
+Screenshot-only step was aborted after user expanded request to include cassette run control.
