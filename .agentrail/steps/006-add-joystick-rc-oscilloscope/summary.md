@@ -1,0 +1,1 @@
+Added a joystick-only dual-track RC oscilloscope to sw-cdp1802-io. The web board records real OUT 2/OUT 3 pulse events from the shared emulator BoardIo path, samples X and Y traces from the emulated RC delay buckets, renders a compact SVG scope, preserves one-instruction browser yielding, and includes focused tests for pulse trigger/drop timing and independent X/Y traces.

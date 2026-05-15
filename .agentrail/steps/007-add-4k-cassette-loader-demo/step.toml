@@ -1,0 +1,8 @@
+number = 7
+slug = "add-4k-cassette-loader-demo"
+status = "pending"
+description = "Implement the 4K cassette-loader logo demo using the shared full assembler an..."
+role = "legacy"
+context_files = []
+created_at = "2026-05-14T19:01:32"
+commits = []
